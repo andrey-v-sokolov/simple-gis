@@ -1,2 +1,3 @@
 # simple-gis
-Simple urban gis web-service with persistance data and client library.
+
+Simple urban gis web-service with persistence data and client library.
