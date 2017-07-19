@@ -16,6 +16,8 @@
         <module>common</module>
         <module>library</module>
         <module>client</module>
+        <module>liquibase</module>
+        <module>jooq</module>
     </modules>
 
     <properties>
@@ -24,13 +26,20 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-        <liquibase.version>3.4.2</liquibase.version>
         <maven-surefire-plugin.version>2.19</maven-surefire-plugin.version>
         <maven-failsafe-plugin.version>2.19</maven-failsafe-plugin.version>
         <maven-pmd-plugin.version>3.6</maven-pmd-plugin.version>
         <maven-checkstyle-plugin.version>2.17</maven-checkstyle-plugin.version>
         <checkstyle.version>6.9</checkstyle.version>
         <findbugs-maven-plugin.version>3.0.3</findbugs-maven-plugin.version>
+
+
+        <liquibase.version>3.5.3</liquibase.version>
+        <mvn.db.url>jdbc:postgresql://${mvn.db.host}:5432/${mvn.db.schema}?createDatabaseIfNotExist=true</mvn.db.url>
+        <postgres.driver>org.postgresql.Driver</postgres.driver>
+        <liquibase.changelog>src/main/resources/master-db-changelog.xml</liquibase.changelog>
+
+        <org.jooq.version>3.9.1</org.jooq.version>
     </properties>
 
     <profiles>
@@ -40,17 +49,14 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <!--ToDo: add DB params-->
-                <!--<mvn.db.user></mvn.db.user>-->
-                <!--<mvn.db.schema></mvn.db.schema>-->
+                <mvn.db.user>simplegisuser</mvn.db.user>
+                <mvn.db.schema>simplegisdb</mvn.db.schema>
                 <mvn.db.host>localhost</mvn.db.host>
                 <mvn.db.port>5432</mvn.db.port>
                 <mvn.db.password>12345</mvn.db.password>
                 <mvn.catalina.home>${CATALINA_HOME:-.}</mvn.catalina.home>
                 <mvn.db.contexts>dev</mvn.db.contexts>
-                <mvn.server.port>5006</mvn.server.port>
-                <mvn.server.adminport>8085</mvn.server.adminport>
-                <mvn.jvm.args>-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5007</mvn.jvm.args>
+                <mvn.server.port>8080</mvn.server.port>
             </properties>
             <build>
                 <resources>
@@ -64,17 +70,14 @@
         <profile>
             <id>stage</id>
             <properties>
-                <!--ToDo: add DB params-->
-                <!--<mvn.db.user></mvn.db.user>-->
-                <!--<mvn.db.schema></mvn.db.schema>-->
-                <mvn.db.host>localhost</mvn.db.host>
+                <mvn.db.user>simplegisuser</mvn.db.user>
+                <mvn.db.schema>simplegisdb</mvn.db.schema>
+                <mvn.db.host>51.15.73.199</mvn.db.host>
                 <mvn.db.port>5432</mvn.db.port>
-                <mvn.db.password>12345</mvn.db.password>
+                <!--<mvn.db.password></mvn.db.password>-->
                 <mvn.catalina.home>${CATALINA_HOME:-.}</mvn.catalina.home>
                 <mvn.db.contexts>dev</mvn.db.contexts>
                 <mvn.server.port>8082</mvn.server.port>
-                <mvn.server.adminport>8085</mvn.server.adminport>
-                <mvn.jvm.args>-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5008</mvn.jvm.args>
             </properties>
             <build>
                 <resources>
@@ -87,7 +90,7 @@
                 </resources>
             </build>
         </profile>
-        <!--ToDo: create other profiles-->
+        <!--ToDo: create prod profiles-->
     </profiles>
 
 
@@ -111,6 +114,16 @@
             <dependency>
                 <groupId>com.simplegis</groupId>
                 <artifactId>library</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.simplegis</groupId>
+                <artifactId>jooq</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.simplegis</groupId>
+                <artifactId>liquibase</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -248,8 +261,8 @@
                             <consoleOutput>true</consoleOutput>
                             <failsOnError>true</failsOnError>
                             <linkXRef>true</linkXRef>
-                            <!--ToDo: add proper domain excludes-->
-                            <!--<excludes>com.simplegis.common.domain.*</excludes>-->
+                            <excludes>com.simplegis.webservice.persistance.*</excludes>
+                            <excludes>com.simplegis.common.dto.*</excludes>
                         </configuration>
                         <goals>
                             <goal>check</goal>
