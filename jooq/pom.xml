@@ -12,6 +12,11 @@
     <artifactId>jooq</artifactId>
 
     <dependencies>
+        <!--simplegis dependencies-->
+        <dependency>
+            <groupId>com.simplegis</groupId>
+            <artifactId>liquibase</artifactId>
+        </dependency>
 
         <!--library dependencies-->
         <dependency>
@@ -72,7 +77,7 @@
                         <configuration>
                             <jdbc>
                                 <driver>${postgres.driver}</driver>
-                                <url>jdbc:mysql://${mvn.db.host}:${mvn.db.port}/${mvn.db.schema}</url>
+                                <url>jdbc:postgresql://${mvn.db.host}:${mvn.db.port}/${mvn.db.schema}</url>
                                 <user>${mvn.db.user}</user>
                                 <password>${mvn.db.password}</password>
                             </jdbc>

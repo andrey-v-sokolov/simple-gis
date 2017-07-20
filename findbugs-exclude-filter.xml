@@ -1,0 +1,8 @@
+<!-- see http://findbugs.sourceforge.net/manual/filter.html -->
+<FindBugsFilter>
+    <Or>
+        <Match>
+            <Package name="~com\.simplegis\.webservice\.persistence.*"/>
+        </Match>
+    </Or>
+</FindBugsFilter>

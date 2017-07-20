@@ -19,5 +19,3 @@ psql$ create database simplegisdb;
 psql$ \connect simplegisdb;
 psql$ CREATE SCHEMA simplegisdb;
 ```
-
-Diff creation:

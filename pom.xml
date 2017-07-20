@@ -35,7 +35,7 @@
 
 
         <liquibase.version>3.5.3</liquibase.version>
-        <mvn.db.url>jdbc:postgresql://${mvn.db.host}:5432/${mvn.db.schema}?createDatabaseIfNotExist=true</mvn.db.url>
+        <mvn.db.url>jdbc:postgresql://${mvn.db.host}:${mvn.db.port}/${mvn.db.schema}?createDatabaseIfNotExist=true</mvn.db.url>
         <postgres.driver>org.postgresql.Driver</postgres.driver>
         <liquibase.changelog>src/main/resources/master-db-changelog.xml</liquibase.changelog>
 
@@ -274,9 +274,9 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>findbugs-maven-plugin</artifactId>
                 <version>${findbugs-maven-plugin.version}</version>
-                <!--<configuration>-->
-                    <!--<excludeFilterFile>findbugs-exclude-filter.xml</excludeFilterFile>-->
-                <!--</configuration>-->
+                <configuration>
+                    <excludeFilterFile>findbugs-exclude-filter.xml</excludeFilterFile>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>
