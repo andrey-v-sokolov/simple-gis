@@ -21,10 +21,6 @@
         </dependency>
         <dependency>
             <groupId>com.simplegis</groupId>
-            <artifactId>jooq</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.simplegis</groupId>
             <artifactId>liquibase</artifactId>
         </dependency>
 
@@ -45,6 +41,10 @@
         <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
         </dependency>
 
 

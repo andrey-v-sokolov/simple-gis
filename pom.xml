@@ -17,7 +17,6 @@
         <module>library</module>
         <module>client</module>
         <module>liquibase</module>
-        <module>jooq</module>
     </modules>
 
     <properties>
@@ -38,8 +37,6 @@
         <mvn.db.url>jdbc:postgresql://${mvn.db.host}:${mvn.db.port}/${mvn.db.schema}?createDatabaseIfNotExist=true</mvn.db.url>
         <postgres.driver>org.postgresql.Driver</postgres.driver>
         <liquibase.changelog>src/main/resources/master-db-changelog.xml</liquibase.changelog>
-
-        <org.jooq.version>3.9.1</org.jooq.version>
     </properties>
 
     <profiles>
@@ -118,13 +115,15 @@
             </dependency>
             <dependency>
                 <groupId>com.simplegis</groupId>
-                <artifactId>jooq</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.simplegis</groupId>
                 <artifactId>liquibase</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+
+            <!--library dependencies-->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>3.4</version>
             </dependency>
 
 
