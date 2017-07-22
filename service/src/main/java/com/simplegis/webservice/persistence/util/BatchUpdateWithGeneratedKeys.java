@@ -1,0 +1,86 @@
+package com.simplegis.webservice.persistence.util;
+
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.*;
+import org.springframework.jdbc.support.JdbcUtils;
+import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Component;
+
+import java.sql.*;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * https://jira.spring.io/browse/SPR-1836 slightly modified.
+ */
+@Component
+public class BatchUpdateWithGeneratedKeys {
+    private static final Logger LOG = LoggerFactory.getLogger(BatchUpdateWithGeneratedKeys.class);
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    //ToDo: compose proper javadoc.
+    /**
+     * Temporary javadoc.
+     * @param sql parameter
+     * @param pss parameter
+     * @param generatedKeyHolder parameter
+     * @return generated keys list
+     * @throws DataAccessException exception
+     */
+    public List<Map<String, Object>> batchUpdate(final String sql,
+                             final BatchPreparedStatementSetter pss, final KeyHolder generatedKeyHolder)
+            throws DataAccessException {
+
+        return (List<Map<String, Object>>)  jdbcTemplate.execute(
+                conn -> conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS),
+                (PreparedStatementCallback) ps -> {
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("Executing batch SQL update and returning "
+                                + "generated keys [" + sql + "]");
+                    }
+
+                    try {
+                        int batchSize = pss.getBatchSize();
+                        int totalRowsAffected = 0;
+                        int[] rowsAffected = new int[batchSize];
+                        List<Map<String, Object>> generatedKeys = generatedKeyHolder.getKeyList();
+                        generatedKeys.clear();
+                        ResultSet keys = null;
+                        for (int i = 0; i < batchSize; i++) {
+                            pss.setValues(ps, i);
+                            rowsAffected[i] = ps.executeUpdate();
+                            totalRowsAffected += rowsAffected[i];
+                            try {
+                                keys = ps.getGeneratedKeys();
+                                if (keys != null) {
+                                    RowMapper<Map<String, Object>> rowMapper = new ColumnMapRowMapper();
+                                    RowMapperResultSetExtractor<Map<String, Object>> rse =
+                                            new RowMapperResultSetExtractor<>(rowMapper, 1);
+                                    generatedKeys.addAll(rse.extractData(keys));
+                                }
+                            } finally {
+                                JdbcUtils.closeResultSet(keys);
+                            }
+                        }
+
+                        if (LOG.isDebugEnabled()) {
+                            LOG.debug("SQL batch update affected "
+                                    + totalRowsAffected + " rows and returned "
+                                    + generatedKeys.size() + " keys");
+                        }
+
+                        return generatedKeys;
+                    } finally {
+                        if (pss instanceof ParameterDisposer) {
+                            ((ParameterDisposer) pss).cleanupParameters();
+                        }
+                    }
+                });
+    }
+}
