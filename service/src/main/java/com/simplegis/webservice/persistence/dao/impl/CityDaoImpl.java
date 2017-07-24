@@ -120,8 +120,9 @@ public class CityDaoImpl extends JdbcDaoSupport implements CityDao {
     @Override
     @Transactional(readOnly = true)
     public List<City> getByName(String name) {
-        String sql = "SELECT * FROM simplegisdb.city c WHERE c.name LIKE '%?%'";
-        Object[] args = {name};
+        String sql = "SELECT * FROM simplegisdb.city c WHERE c.name LIKE ?";
+        String nToken = "%" + name + "%";
+        Object[] args = {nToken};
 
         return getJdbcTemplate().query(sql, args, new BeanPropertyRowMapper<City>());
     }

@@ -2,13 +2,12 @@ package com.simplegis.webservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
- * Temporary javadoc.
+ * Application endpoint for Spring-Boot.
  */
 @ComponentScan("com.simplegis.webservice")
 @PropertySource(
@@ -20,8 +19,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class WebServiceApp {
 
     /**
-     * Temporary javadoc.
-     * @param args application startup arguments.
+     * Application entry point.
+     *
+     * @param args application arguments
      */
     public static void main(String[] args) {
         SpringApplication.run(WebServiceApp.class, args);

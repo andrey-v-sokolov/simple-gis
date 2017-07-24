@@ -70,7 +70,7 @@ public class CityService {
      * @param name
      * @return
      */
-    public City getByName(String name) {
+    public List<City> getByName(String name) {
         return cityDao.getByName(name);
     }
 

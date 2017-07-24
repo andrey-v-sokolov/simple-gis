@@ -4,6 +4,8 @@ package com.simplegis.webservice.web;
 import com.simplegis.common.dto.OrganizationDto;
 import com.simplegis.common.dto.PhoneDto;
 import com.simplegis.common.dto.ScopeDto;
+import com.simplegis.webservice.persistence.entity.Organization;
+import com.simplegis.webservice.persistence.entity.Phone;
 import com.simplegis.webservice.persistence.util.mapper.OrganizationMapper;
 import com.simplegis.webservice.persistence.util.mapper.PhoneMapper;
 import com.simplegis.webservice.persistence.util.mapper.ScopeMapper;
@@ -14,7 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigInteger;
+import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -28,40 +33,40 @@ public class OrganizationController {
     @Autowired
     private OrganizationService organizationService;
 
-
     /**
-     *
      * @return
      */
     @RequestMapping(method = RequestMethod.GET, value = "/getAll")
     public List<OrganizationDto> getAll() {
         return organizationService.getAll()
-                .stream().map(OrganizationMapper::toDto).collect(Collectors.toList());
+                .stream().map(organization ->
+                        OrganizationMapper.toDto(organization, organizationService.getPhonesByOrganizationId(organization.getId()))
+                ).collect(Collectors.toList());
     }
 
     /**
-     *
      * @param id
      * @return
      */
     @RequestMapping(method = RequestMethod.GET, value = "/getById/{id}")
     public OrganizationDto getById(@PathVariable("id") BigInteger id) {
-        return OrganizationMapper.toDto(organizationService.getById(id));
+        return OrganizationMapper.toDto(organizationService.getById(id),
+                organizationService.getPhonesByOrganizationId(id));
     }
 
     /**
-     *
      * @param name
      * @return
      */
     @RequestMapping(method = RequestMethod.GET, value = "/getByName/{name}")
     public List<OrganizationDto> getByName(@PathVariable("name") String name) {
         return organizationService.getByName(name)
-                .stream().map(OrganizationMapper::toDto).collect(Collectors.toList());
+                .stream().map(organization ->
+                        OrganizationMapper.toDto(organization, organizationService.getPhonesByOrganizationId(organization.getId()))
+                ).collect(Collectors.toList());
     }
 
     /**
-     *
      * @param organization
      * @return
      */
@@ -71,28 +76,54 @@ public class OrganizationController {
     }
 
     /**
-     *
      * @param cityId
      * @return
      */
     @RequestMapping(method = RequestMethod.GET, value = "/getByCityId/{cityId}")
     public List<OrganizationDto> getByCityId(@PathVariable("cityId") BigInteger cityId) {
         return organizationService.getByCityId(cityId)
-                .stream().map(OrganizationMapper::toDto).collect(Collectors.toList());
+                .stream().map(organization ->
+                        OrganizationMapper.toDto(organization, organizationService.getPhonesByOrganizationId(organization.getId()))
+                ).collect(Collectors.toList());
     }
 
     /**
-     *
      * @param organization
      * @return
      */
     @RequestMapping(method = RequestMethod.POST, value = "/insert")
     public OrganizationDto insert(@RequestBody OrganizationDto organization) {
-        return OrganizationMapper.toDto(organizationService.insert(OrganizationMapper.fromDto(organization)));
+        return OrganizationMapper.toDto(
+                organizationService.insert(OrganizationMapper.fromDto(organization)),
+                organizationService.addPhoneList(OrganizationMapper.extractPhones(organization))
+        );
     }
 
     /**
-     *
+     * @param organizations
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.POST, value = "/batchInsert")
+    public List<OrganizationDto> batchInsert(@RequestBody List<OrganizationDto> organizations) {
+
+        List<Organization> insertedOrganizations = organizationService.batchInsert(
+                organizations.stream().map(OrganizationMapper::fromDto).collect(Collectors.toList())
+        );
+
+        Map<BigInteger, List<Phone>> organizationPhones = new HashMap<>();
+
+        organizations.forEach(o ->
+                organizationPhones.put(
+                        o.getId(), organizationService.addPhoneList(o.getPhones().stream().map(PhoneMapper::fromDto).collect(Collectors.toList()))
+                )
+        );
+
+        return insertedOrganizations.stream().map(io ->
+                OrganizationMapper.toDto(io, organizationPhones.get(io.getId()))
+        ).collect(Collectors.toList());
+    }
+
+    /**
      * @param cityId
      * @param streetId
      * @return
@@ -102,11 +133,12 @@ public class OrganizationController {
             @PathVariable("cityId") BigInteger cityId,
             @PathVariable("streetId") BigInteger streetId) {
         return organizationService.getByCityIdAndStreetId(cityId, streetId)
-                .stream().map(OrganizationMapper::toDto).collect(Collectors.toList());
+                .stream().map(organization ->
+                        OrganizationMapper.toDto(organization, organizationService.getPhonesByOrganizationId(organization.getId()))
+                ).collect(Collectors.toList());
     }
 
     /**
-     *
      * @param cityId
      * @param streetId
      * @param building
@@ -118,23 +150,12 @@ public class OrganizationController {
             @PathVariable("streetId") BigInteger streetId,
             @PathVariable("building") Integer building) {
         return organizationService.getByCityIdAndStreetIdAndBuilding(cityId, streetId, building)
-                .stream().map(OrganizationMapper::toDto).collect(Collectors.toList());
+                .stream().map(organization ->
+                        OrganizationMapper.toDto(organization, organizationService.getPhonesByOrganizationId(organization.getId()))
+                ).collect(Collectors.toList());
     }
 
     /**
-     *
-     * @param organizations
-     * @return
-     */
-    @RequestMapping(method = RequestMethod.POST, value = "/batchInsert")
-    public List<OrganizationDto> batchInsert(@RequestBody List<OrganizationDto> organizations) {
-        return organizationService.batchInsert(
-                organizations.stream().map(OrganizationMapper::fromDto).collect(Collectors.toList())
-        ).stream().map(OrganizationMapper::toDto).collect(Collectors.toList());
-    }
-
-    /**
-     *
      * @param organizationToken
      * @param geoToken
      * @return
@@ -144,11 +165,24 @@ public class OrganizationController {
             @PathVariable("orgToken") String organizationToken,
             @PathVariable("geoToken") String geoToken) {
         return organizationService.getByScopeNameOrOrganizationNameAndGeoToken(organizationToken, geoToken)
-                .stream().map(OrganizationMapper::toDto).collect(Collectors.toList());
+                .stream().map(organization ->
+                        OrganizationMapper.toDto(organization, organizationService.getPhonesByOrganizationId(organization.getId()))
+                ).collect(Collectors.toList());
     }
 
     /**
-     *
+     * @param timestamp
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.POST, value = "/getOrganizationAddedOrModifiedSince")
+    public List<OrganizationDto> getOrganizationAddedOrModifiedSince(@RequestBody Timestamp timestamp) {
+        return organizationService.getOrganizationAddedOrModifiedSince(timestamp)
+                .stream().map(organization ->
+                        OrganizationMapper.toDto(organization, organizationService.getPhonesByOrganizationId(organization.getId()))
+                ).collect(Collectors.toList());
+    }
+
+    /**
      * @param orgId
      * @param phoneDto
      * @return
@@ -162,7 +196,6 @@ public class OrganizationController {
     }
 
     /**
-     *
      * @param orgId
      * @param phoneDto
      * @return
@@ -176,7 +209,6 @@ public class OrganizationController {
     }
 
     /**
-     *
      * @param orgId
      * @param phoneDto
      * @return
@@ -190,7 +222,6 @@ public class OrganizationController {
     }
 
     /**
-     *
      * @return
      */
     @RequestMapping(method = RequestMethod.GET, value = "/getAvailableScopes")

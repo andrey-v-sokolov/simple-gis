@@ -2,7 +2,6 @@ package com.simplegis.webservice.persistence.dao.impl;
 
 
 import com.simplegis.webservice.persistence.dao.OrganizationDao;
-import com.simplegis.webservice.persistence.entity.City;
 import com.simplegis.webservice.persistence.entity.Organization;
 import com.simplegis.webservice.persistence.util.BatchUpdateWithGeneratedKeys;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -133,35 +132,61 @@ public class OrganizationDaoImpl extends JdbcDaoSupport implements OrganizationD
     @Override
     @Transactional(readOnly = true)
     public List<Organization> getByName(String name) {
-        //ToDo: implement;
-        return null;
+        String sql = "SELECT * FROM simplegisdb.organization o WHERE o.name LIKE ?";
+
+        String nToken = "%" + name + "%";
+        Object[] args = {nToken};
+
+        return getJdbcTemplate().query(sql, args, new BeanPropertyRowMapper<Organization>());
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Organization> getByCityId(BigInteger city) {
-        //ToDo: implement;
-        return null;
+    public List<Organization> getByCityId(BigInteger cityId) {
+        String sql = "SELECT * FROM simplegisdb.organization o WHERE o.city = ?";
+        Object[] args = {cityId};
+
+        return getJdbcTemplate().query(sql, args, new BeanPropertyRowMapper<Organization>());
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<Organization> getByCityIdAndStreetId(BigInteger cityId, BigInteger streetId) {
-        //ToDo: implement;
-        return null;
+        String sql = "SELECT * FROM simplegisdb.organization o WHERE o.city = ? AND o.street = ?";
+        Object[] args = {cityId, streetId};
+
+        return getJdbcTemplate().query(sql, args, new BeanPropertyRowMapper<Organization>());
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<Organization> getByCityIdAndStreetIdAndBuilding(BigInteger cityId, BigInteger streetId, Integer building) {
-        //ToDo: implement;
-        return null;
+        String sql = "SELECT * FROM simplegisdb.organization o WHERE o.city = ? AND o.street = ? AND o.building = ?";
+        Object[] args = {cityId, streetId, building};
+
+        return getJdbcTemplate().query(sql, args, new BeanPropertyRowMapper<Organization>());
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<Organization> getByScopeNameOrOrganizationNameAndGeoToken(String organizationToken, String geoToken) {
-        //ToDo: implement;
-        return null;
+        String sql = "SELECT * FROM simplegisdb.organization o WHERE "
+                + "(o.scope IN (SELECT s.id FROM simplegisdb.scope s WHERE s.name LIKE ?) OR o.name LIKE ?) "
+                + "AND (o.city IN (SELECT c.id FROM simplegisdb.city c WHERE c.name LIKE ?) "
+                + "OR o.street IN (SELECT st.id FROM simplegisdb.street st WHERE st.name LIKE ?))";
+
+        String oToken = "%" + organizationToken + "%";
+        String gToken = "%" + geoToken + "%";
+        Object[] args = {oToken, oToken, gToken, gToken};
+
+        return getJdbcTemplate().query(sql, args, new BeanPropertyRowMapper<Organization>());
+    }
+
+    @Override
+    public List<Organization> getOrganizationAddedOrModifiedSince(Timestamp timestamp) {
+        String sql = "SELECT * FROM simplegisdb.organization o WHERE o.modified >= ?";
+        Object[] args = {timestamp};
+
+        return getJdbcTemplate().query(sql, args, new BeanPropertyRowMapper<Organization>());
     }
 }

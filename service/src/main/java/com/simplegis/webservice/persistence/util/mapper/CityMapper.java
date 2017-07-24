@@ -4,27 +4,37 @@ import com.simplegis.common.dto.CityDto;
 import com.simplegis.webservice.persistence.entity.City;
 
 /**
- *
+ * Maps city entity to dto and vice versa.
  */
 public final class CityMapper {
 
     /**
-     *
-     * @param city
-     * @return
+     * Maps city entity to dto.
+     * @param city entity to map
+     * @return dto.
      */
     public static CityDto toDto(City city) {
-        //ToDo: implement;
-        return null;
+        return new CityDto(
+                city.getId(),
+                city.getName(),
+                city.getArea(),
+                city.getPopulation(),
+                city.getVersion()
+        );
     }
 
     /**
-     *
-     * @param cityDto
-     * @return
+     * Extract city from dto.
+     * @param cityDto dto to extract from
+     * @return extracted entity
      */
     public static City fromDto(CityDto cityDto) {
-        //ToDo: implement;
-        return null;
+        return new City(
+                cityDto.getId(),
+                cityDto.getName(),
+                cityDto.getArea(),
+                cityDto.getPopulation(),
+                cityDto.getVersion()
+        );
     }
 }

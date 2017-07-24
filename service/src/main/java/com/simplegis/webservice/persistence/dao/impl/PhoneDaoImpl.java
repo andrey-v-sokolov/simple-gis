@@ -1,7 +1,6 @@
 package com.simplegis.webservice.persistence.dao.impl;
 
 import com.simplegis.webservice.persistence.dao.PhoneDao;
-import com.simplegis.webservice.persistence.entity.City;
 import com.simplegis.webservice.persistence.entity.Phone;
 import com.simplegis.webservice.persistence.util.BatchUpdateWithGeneratedKeys;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,8 +45,8 @@ public class PhoneDaoImpl extends JdbcDaoSupport implements PhoneDao {
     @Override
     @Transactional
     public Integer update(Phone phone) {
-        String sql = "UPDATE simplegisdb.phone p SET p.number = ?, p.organization_id = ?, p.version = ?" +
-                " WHERE p.id = ? AND p.version = ?";
+        String sql = "UPDATE simplegisdb.phone p SET p.number = ?, p.organization_id = ?, p.version = ?"
+                + " WHERE p.id = ? AND p.version = ?";
 
         return getJdbcTemplate().update(sql,
                 phone.getNumber(), phone.getOrganizationId(), phone.getVersion() + 1, phone.getId(), phone.getVersion());
@@ -56,8 +55,8 @@ public class PhoneDaoImpl extends JdbcDaoSupport implements PhoneDao {
     @Override
     @Transactional
     public Phone insert(Phone phone) {
-        String sql = "INSERT INTO simplegisdb.phone (number, organization_id, version)" +
-                " VALUES (?, ?, ?)";
+        String sql = "INSERT INTO simplegisdb.phone (number, organization_id, version)"
+                + " VALUES (?, ?, ?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -82,8 +81,8 @@ public class PhoneDaoImpl extends JdbcDaoSupport implements PhoneDao {
     @Override
     @Transactional
     public List<Phone> batchInsert(List<Phone> phones) {
-        String sql = "INSERT INTO simplegisdb.phone (number, organization_id, version)" +
-                " VALUES (?, ?, ?)";
+        String sql = "INSERT INTO simplegisdb.phone (number, organization_id, version)"
+                + " VALUES (?, ?, ?)";
 
         List<Map<String, Object>> generatedKeys;
 
@@ -118,7 +117,18 @@ public class PhoneDaoImpl extends JdbcDaoSupport implements PhoneDao {
     @Override
     @Transactional
     public Integer delete(Phone phone) {
-        //ToDo: implement;
-        return null;
+        String sql = "DELETE FROM simplegisdb.phone p WHERE p.id = ?";
+        Object[] args = {phone.getId()};
+
+        return getJdbcTemplate().update(sql, args);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Phone> getByOrganizationId(BigInteger orgId) {
+        String sql = "SELECT * FROM simplegisdb.phone p WHERE p.organization_id = ?";
+        Object[] args = {orgId};
+
+        return getJdbcTemplate().query(sql, args, new BeanPropertyRowMapper<Phone>());
     }
 }

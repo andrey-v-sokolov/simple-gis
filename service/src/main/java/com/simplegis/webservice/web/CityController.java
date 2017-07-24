@@ -82,8 +82,8 @@ public class CityController {
      * @return
      */
     @RequestMapping(method = RequestMethod.GET, value = "/getByName/{name}")
-    public CityDto getByName(@PathVariable("name") String name) {
-        return CityMapper.toDto(cityService.getByName(name));
+    public List<CityDto> getByName(@PathVariable("name") String name) {
+        return cityService.getByName(name).stream().map(CityMapper::toDto).collect(Collectors.toList());
     }
 
     /**

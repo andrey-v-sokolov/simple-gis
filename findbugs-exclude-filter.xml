@@ -2,6 +2,18 @@
 <FindBugsFilter>
     <Or>
         <Match>
+            <Bug pattern="EI_EXPOSE_REP"/>
+            <Package name="~com\.simplegis\.common\.dto.*"/>
+        </Match>
+    </Or>
+    <Or>
+        <Match>
+            <Bug pattern="EI_EXPOSE_REP2"/>
+            <Package name="~com\.simplegis\.common\.dto.*"/>
+        </Match>
+    </Or>
+    <Or>
+        <Match>
             <Package name="~com\.simplegis\.webservice\.persistence.*"/>
         </Match>
     </Or>

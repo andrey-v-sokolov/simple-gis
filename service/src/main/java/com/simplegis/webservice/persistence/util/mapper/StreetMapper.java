@@ -4,27 +4,37 @@ import com.simplegis.common.dto.StreetDto;
 import com.simplegis.webservice.persistence.entity.Street;
 
 /**
- *
+ * Maps street entity to dto and vice versa.
  */
 public final class StreetMapper {
 
     /**
-     *
-     * @param street
-     * @return
+     * Maps street entity to dto.
+     * @param street entity to map
+     * @return dto.
      */
     public static StreetDto toDto(Street street) {
-        //ToDo: implement;
-        return null;
+        return new StreetDto(
+                street.getId(),
+                street.getName(),
+                street.getLength(),
+                street.getCityId(),
+                street.getVersion()
+        );
     }
 
     /**
-     *
-     * @param streetDto
-     * @return
+     * Extract street from dto.
+     * @param streetDto dto to extract from
+     * @return extracted entity
      */
     public static Street fromDto(StreetDto streetDto) {
-        //ToDo: implement;
-        return null;
+        return new Street(
+                streetDto.getId(),
+                streetDto.getName(),
+                streetDto.getLength(),
+                streetDto.getCityId(),
+                streetDto.getVersion()
+        );
     }
 }

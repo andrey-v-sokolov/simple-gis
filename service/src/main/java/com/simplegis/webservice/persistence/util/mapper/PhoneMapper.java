@@ -4,27 +4,35 @@ import com.simplegis.common.dto.PhoneDto;
 import com.simplegis.webservice.persistence.entity.Phone;
 
 /**
- *
+ * Maps phone entity to dto and vice versa.
  */
 public final class PhoneMapper {
 
     /**
-     *
-     * @param phone
-     * @return
+     * Maps phone entity to dto.
+     * @param phone entity to map
+     * @return dto.
      */
     public static PhoneDto toDto(Phone phone) {
-        //ToDo: implement;
-        return null;
+        return new PhoneDto(
+                phone.getId(),
+                phone.getNumber(),
+                phone.getOrganizationId(),
+                phone.getVersion()
+        );
     }
 
     /**
-     *
-     * @param phoneDto
-     * @return
+     * Extract phone from dto.
+     * @param phoneDto dto to extract from
+     * @return extracted entity
      */
     public static Phone fromDto(PhoneDto phoneDto) {
-        //ToDo: implement;
-        return null;
+        return new Phone(
+                phoneDto.getId(),
+                phoneDto.getNumber(),
+                phoneDto.getOrganizationId(),
+                phoneDto.getVersion()
+        );
     }
 }

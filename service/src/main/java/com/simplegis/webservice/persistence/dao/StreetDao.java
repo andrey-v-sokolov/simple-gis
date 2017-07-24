@@ -1,6 +1,5 @@
 package com.simplegis.webservice.persistence.dao;
 
-import com.simplegis.webservice.persistence.entity.City;
 import com.simplegis.webservice.persistence.entity.Street;
 
 import java.math.BigDecimal;

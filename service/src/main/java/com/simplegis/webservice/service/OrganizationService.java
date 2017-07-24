@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -121,11 +122,38 @@ public class OrganizationService {
 
     /**
      *
+     * @param timestamp
+     * @return
+     */
+    public List<Organization> getOrganizationAddedOrModifiedSince(Timestamp timestamp) {
+        return organizationDao.getOrganizationAddedOrModifiedSince(timestamp);
+    }
+
+    /**
+     *
+     * @param orgId
+     * @return
+     */
+    public List<Phone> getPhonesByOrganizationId(BigInteger orgId) {
+        return phoneDao.getByOrganizationId(orgId);
+    }
+
+    /**
+     *
      * @param phone
      * @return
      */
     public Phone addPhone(Phone phone) {
         return phoneDao.insert(phone);
+    }
+
+    /**
+     *
+     * @param phones
+     * @return
+     */
+    public List<Phone> addPhoneList(List<Phone> phones) {
+        return phoneDao.batchInsert(phones);
     }
 
     /**
