@@ -6,6 +6,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 /**
  * Street entity.
@@ -14,10 +15,11 @@ public class Street implements Serializable {
 
     private static final long serialVersionUID = -38262671;
 
-    private Long id;
+    private BigInteger id;
     private String name;
     private BigDecimal length;
-    private Long cityId;
+    private BigInteger cityId;
+    private Integer version;
 
     public Street() {
     }
@@ -27,29 +29,32 @@ public class Street implements Serializable {
         this.name = value.name;
         this.length = value.length;
         this.cityId = value.cityId;
+        this.version = value.version;
     }
 
     public Street(
-            Long id,
+            BigInteger id,
             String name,
             BigDecimal length,
-            Long cityId
+            BigInteger cityId,
+            Integer version
     ) {
         this.id = id;
         this.name = name;
         this.length = length;
         this.cityId = cityId;
+        this.version = version;
     }
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }
 
-    public Long getId() {
+    public BigInteger getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(BigInteger id) {
         this.id = id;
     }
 
@@ -69,12 +74,20 @@ public class Street implements Serializable {
         this.length = length;
     }
 
-    public Long getCityId() {
+    public BigInteger getCityId() {
         return cityId;
     }
 
-    public void setCityId(Long cityId) {
+    public void setCityId(BigInteger cityId) {
         this.cityId = cityId;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 
     @Override
@@ -94,6 +107,7 @@ public class Street implements Serializable {
                 .append(name, street.name)
                 .append(length, street.length)
                 .append(cityId, street.cityId)
+                .append(version, street.version)
                 .isEquals();
     }
 
@@ -104,6 +118,7 @@ public class Street implements Serializable {
                 .append(name)
                 .append(length)
                 .append(cityId)
+                .append(version)
                 .toHashCode();
     }
 
@@ -114,6 +129,7 @@ public class Street implements Serializable {
                 .append("name", name)
                 .append("length", length)
                 .append("cityId", cityId)
+                .append("version", version)
                 .toString();
     }
 }

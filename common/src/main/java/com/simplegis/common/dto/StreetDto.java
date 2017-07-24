@@ -1,4 +1,4 @@
-package com.simplegis.webservice.persistence.entity;
+package com.simplegis.common.dto;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -9,40 +9,40 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 /**
- * City entity.
+ * Street data transfer object.
  */
-public class City implements Serializable {
+public class StreetDto implements Serializable {
 
-    private static final long serialVersionUID = -1826957841;
+    private static final long serialVersionUID = -38262672;
 
     private BigInteger id;
     private String name;
-    private BigDecimal area;
-    private Integer population;
+    private BigDecimal length;
+    private BigInteger cityId;
     private Integer version;
 
-    public City() {
+    public StreetDto() {
     }
 
-    public City(City value) {
+    public StreetDto(StreetDto value) {
         this.id = value.id;
         this.name = value.name;
-        this.area = value.area;
-        this.population = value.population;
+        this.length = value.length;
+        this.cityId = value.cityId;
         this.version = value.version;
     }
 
-    public City(
+    public StreetDto(
             BigInteger id,
             String name,
-            BigDecimal area,
-            Integer population,
+            BigDecimal length,
+            BigInteger cityId,
             Integer version
     ) {
         this.id = id;
         this.name = name;
-        this.area = area;
-        this.population = population;
+        this.length = length;
+        this.cityId = cityId;
         this.version = version;
     }
 
@@ -66,20 +66,20 @@ public class City implements Serializable {
         this.name = name;
     }
 
-    public BigDecimal getArea() {
-        return area;
+    public BigDecimal getLength() {
+        return length;
     }
 
-    public void setArea(BigDecimal area) {
-        this.area = area;
+    public void setLength(BigDecimal length) {
+        this.length = length;
     }
 
-    public Integer getPopulation() {
-        return population;
+    public BigInteger getCityId() {
+        return cityId;
     }
 
-    public void setPopulation(Integer population) {
-        this.population = population;
+    public void setCityId(BigInteger cityId) {
+        this.cityId = cityId;
     }
 
     public Integer getVersion() {
@@ -100,14 +100,14 @@ public class City implements Serializable {
             return false;
         }
 
-        City city = (City) o;
+        StreetDto streetDto = (StreetDto) o;
 
         return new EqualsBuilder()
-                .append(id, city.id)
-                .append(name, city.name)
-                .append(area, city.area)
-                .append(population, city.population)
-                .append(version, city.version)
+                .append(id, streetDto.id)
+                .append(name, streetDto.name)
+                .append(length, streetDto.length)
+                .append(cityId, streetDto.cityId)
+                .append(version, streetDto.version)
                 .isEquals();
     }
 
@@ -116,8 +116,8 @@ public class City implements Serializable {
         return new HashCodeBuilder(17, 37)
                 .append(id)
                 .append(name)
-                .append(area)
-                .append(population)
+                .append(length)
+                .append(cityId)
                 .append(version)
                 .toHashCode();
     }
@@ -127,8 +127,8 @@ public class City implements Serializable {
         return new ToStringBuilder(this)
                 .append("id", id)
                 .append("name", name)
-                .append("area", area)
-                .append("population", population)
+                .append("length", length)
+                .append("cityId", cityId)
                 .append("version", version)
                 .toString();
     }

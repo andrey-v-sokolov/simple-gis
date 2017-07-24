@@ -10,7 +10,8 @@ import org.springframework.jdbc.support.JdbcUtils;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
-import java.sql.*;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
 
@@ -25,19 +26,21 @@ public class BatchUpdateWithGeneratedKeys {
     private JdbcTemplate jdbcTemplate;
 
     //ToDo: compose proper javadoc.
+
     /**
      * Temporary javadoc.
-     * @param sql parameter
-     * @param pss parameter
+     *
+     * @param sql                parameter
+     * @param pss                parameter
      * @param generatedKeyHolder parameter
      * @return generated keys list
      * @throws DataAccessException exception
      */
     public List<Map<String, Object>> batchUpdate(final String sql,
-                             final BatchPreparedStatementSetter pss, final KeyHolder generatedKeyHolder)
+                                                 final BatchPreparedStatementSetter pss, final KeyHolder generatedKeyHolder)
             throws DataAccessException {
 
-        return (List<Map<String, Object>>)  jdbcTemplate.execute(
+        return (List<Map<String, Object>>) jdbcTemplate.execute(
                 conn -> conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS),
                 (PreparedStatementCallback) ps -> {
                     if (LOG.isDebugEnabled()) {

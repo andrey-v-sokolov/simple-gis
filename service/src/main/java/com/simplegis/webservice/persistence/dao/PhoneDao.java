@@ -1,12 +1,16 @@
 package com.simplegis.webservice.persistence.dao;
 
-
-import org.springframework.stereotype.Repository;
+import com.simplegis.webservice.persistence.entity.Phone;
 
 /**
- * Dao.
+ * Phone specific data access object interface extension.
  */
-@Repository
-public class PhoneDao {
+public interface PhoneDao extends GenericDao<Phone> {
 
+    /**
+     *
+     * @param phone
+     * @return
+     */
+    Integer delete(Phone phone);
 }

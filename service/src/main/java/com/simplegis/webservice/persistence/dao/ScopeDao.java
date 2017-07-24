@@ -1,12 +1,9 @@
 package com.simplegis.webservice.persistence.dao;
 
-
-import org.springframework.stereotype.Repository;
+import com.simplegis.webservice.persistence.entity.Scope;
 
 /**
- * Dao.
+ * Scope specific data access object interface extension.
  */
-@Repository
-public class ScopeDao {
-
+public interface ScopeDao extends GenericDao<Scope> {
 }

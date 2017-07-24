@@ -5,6 +5,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 
 /**
  * Scope entity.
@@ -15,6 +16,7 @@ public class Scope implements Serializable {
 
     private Integer id;
     private String name;
+    private Integer version;
 
     public Scope() {
     }
@@ -22,14 +24,17 @@ public class Scope implements Serializable {
     public Scope(Scope value) {
         this.id = value.id;
         this.name = value.name;
+        this.version = value.version;
     }
 
     public Scope(
             Integer id,
-            String name
+            String name,
+            Integer version
     ) {
         this.id = id;
         this.name = name;
+        this.version = version;
     }
 
     public static long getSerialVersionUID() {
@@ -52,6 +57,14 @@ public class Scope implements Serializable {
         this.name = name;
     }
 
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -67,6 +80,7 @@ public class Scope implements Serializable {
         return new EqualsBuilder()
                 .append(id, scope.id)
                 .append(name, scope.name)
+                .append(version, scope.version)
                 .isEquals();
     }
 
@@ -75,6 +89,7 @@ public class Scope implements Serializable {
         return new HashCodeBuilder(17, 37)
                 .append(id)
                 .append(name)
+                .append(version)
                 .toHashCode();
     }
 
@@ -83,6 +98,7 @@ public class Scope implements Serializable {
         return new ToStringBuilder(this)
                 .append("id", id)
                 .append("name", name)
+                .append("version", version)
                 .toString();
     }
 }

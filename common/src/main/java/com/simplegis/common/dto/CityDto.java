@@ -1,4 +1,4 @@
-package com.simplegis.webservice.persistence.entity;
+package com.simplegis.common.dto;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -9,11 +9,11 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 /**
- * City entity.
+ * City data transfer object.
  */
-public class City implements Serializable {
+public class CityDto implements Serializable {
 
-    private static final long serialVersionUID = -1826957841;
+    private static final long serialVersionUID = -1826957842;
 
     private BigInteger id;
     private String name;
@@ -21,10 +21,10 @@ public class City implements Serializable {
     private Integer population;
     private Integer version;
 
-    public City() {
+    public CityDto() {
     }
 
-    public City(City value) {
+    public CityDto(CityDto value) {
         this.id = value.id;
         this.name = value.name;
         this.area = value.area;
@@ -32,7 +32,7 @@ public class City implements Serializable {
         this.version = value.version;
     }
 
-    public City(
+    public CityDto(
             BigInteger id,
             String name,
             BigDecimal area,
@@ -100,7 +100,7 @@ public class City implements Serializable {
             return false;
         }
 
-        City city = (City) o;
+        CityDto city = (CityDto) o;
 
         return new EqualsBuilder()
                 .append(id, city.id)

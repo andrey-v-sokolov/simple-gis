@@ -1,48 +1,43 @@
-package com.simplegis.webservice.persistence.entity;
+package com.simplegis.common.dto;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 
 /**
- * City entity.
+ * Phone data transfer object.
  */
-public class City implements Serializable {
+public class PhoneDto implements Serializable {
 
-    private static final long serialVersionUID = -1826957841;
+    private static final long serialVersionUID = -1975356728;
 
     private BigInteger id;
-    private String name;
-    private BigDecimal area;
-    private Integer population;
+    private String number;
+    private BigInteger organizationId;
     private Integer version;
 
-    public City() {
+    public PhoneDto() {
     }
 
-    public City(City value) {
+    public PhoneDto(PhoneDto value) {
         this.id = value.id;
-        this.name = value.name;
-        this.area = value.area;
-        this.population = value.population;
+        this.number = value.number;
+        this.organizationId = value.organizationId;
         this.version = value.version;
     }
 
-    public City(
+    public PhoneDto(
             BigInteger id,
-            String name,
-            BigDecimal area,
-            Integer population,
+            String number,
+            BigInteger organizationId,
             Integer version
     ) {
         this.id = id;
-        this.name = name;
-        this.area = area;
-        this.population = population;
+        this.number = number;
+        this.organizationId = organizationId;
         this.version = version;
     }
 
@@ -58,28 +53,20 @@ public class City implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getNumber() {
+        return number;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNumber(String number) {
+        this.number = number;
     }
 
-    public BigDecimal getArea() {
-        return area;
+    public BigInteger getOrganizationId() {
+        return organizationId;
     }
 
-    public void setArea(BigDecimal area) {
-        this.area = area;
-    }
-
-    public Integer getPopulation() {
-        return population;
-    }
-
-    public void setPopulation(Integer population) {
-        this.population = population;
+    public void setOrganizationId(BigInteger organizationId) {
+        this.organizationId = organizationId;
     }
 
     public Integer getVersion() {
@@ -100,14 +87,13 @@ public class City implements Serializable {
             return false;
         }
 
-        City city = (City) o;
+        PhoneDto phone = (PhoneDto) o;
 
         return new EqualsBuilder()
-                .append(id, city.id)
-                .append(name, city.name)
-                .append(area, city.area)
-                .append(population, city.population)
-                .append(version, city.version)
+                .append(id, phone.id)
+                .append(number, phone.number)
+                .append(organizationId, phone.organizationId)
+                .append(version, phone.version)
                 .isEquals();
     }
 
@@ -115,9 +101,8 @@ public class City implements Serializable {
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
                 .append(id)
-                .append(name)
-                .append(area)
-                .append(population)
+                .append(number)
+                .append(organizationId)
                 .append(version)
                 .toHashCode();
     }
@@ -126,9 +111,8 @@ public class City implements Serializable {
     public String toString() {
         return new ToStringBuilder(this)
                 .append("id", id)
-                .append("name", name)
-                .append("area", area)
-                .append("population", population)
+                .append("number", number)
+                .append("organizationId", organizationId)
                 .append("version", version)
                 .toString();
     }

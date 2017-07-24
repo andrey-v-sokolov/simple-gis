@@ -4,7 +4,7 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd"
                    logicalFilePath="changelog-1.0.xml">
 
-    <changeSet author="asokolov (generated)" id="1500622513125-1">
+    <changeSet author="asokolov (generated)" id="1500816458165-1">
         <createTable tableName="city">
             <column autoIncrement="true" name="id" type="BIGSERIAL">
                 <constraints primaryKey="true" primaryKeyName="city_pkey"/>
@@ -18,9 +18,12 @@
             <column defaultValueNumeric="0" name="population" type="INT">
                 <constraints nullable="false"/>
             </column>
+            <column defaultValueNumeric="0" name="version" type="INT">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
-    <changeSet author="asokolov (generated)" id="1500622513125-2">
+    <changeSet author="asokolov (generated)" id="1500816458165-2">
         <createTable tableName="organization">
             <column autoIncrement="true" name="id" type="BIGSERIAL">
                 <constraints primaryKey="true" primaryKeyName="organization_pkey"/>
@@ -46,7 +49,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="asokolov (generated)" id="1500622513125-3">
+    <changeSet author="asokolov (generated)" id="1500816458165-3">
         <createTable tableName="phone">
             <column name="number" type="VARCHAR(32)">
                 <constraints nullable="false"/>
@@ -54,9 +57,15 @@
             <column name="organization_id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
+            <column autoIncrement="true" name="id" type="SERIAL">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="0" name="version" type="INT">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
-    <changeSet author="asokolov (generated)" id="1500622513125-4">
+    <changeSet author="asokolov (generated)" id="1500816458165-4">
         <createTable tableName="scope">
             <column autoIncrement="true" name="id" type="SERIAL">
                 <constraints primaryKey="true" primaryKeyName="scope_pkey"/>
@@ -64,9 +73,12 @@
             <column name="name" type="TEXT">
                 <constraints nullable="false"/>
             </column>
+            <column defaultValueNumeric="0" name="version" type="INT">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
-    <changeSet author="asokolov (generated)" id="1500622513125-5">
+    <changeSet author="asokolov (generated)" id="1500816458165-5">
         <createTable tableName="street">
             <column autoIncrement="true" name="id" type="BIGSERIAL">
                 <constraints primaryKey="true" primaryKeyName="street_pkey"/>
@@ -80,83 +92,78 @@
             <column name="city_id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
+            <column defaultValueNumeric="0" name="version" type="INT">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
-    <changeSet author="asokolov (generated)" id="1500622513125-6">
-        <addPrimaryKey columnNames="number" constraintName="phone_pkey" tableName="phone"/>
-    </changeSet>
-    <changeSet author="asokolov (generated)" id="1500622513125-7">
+    <changeSet author="asokolov (generated)" id="1500816458165-6">
         <addUniqueConstraint columnNames="name, city_id" constraintName="street_name_city_id_pk" tableName="street"/>
     </changeSet>
-    <changeSet author="asokolov (generated)" id="1500622513125-8">
+    <changeSet author="asokolov (generated)" id="1500816458165-7">
         <createIndex indexName="city_area_index" tableName="city">
             <column name="area"/>
         </createIndex>
     </changeSet>
-    <changeSet author="asokolov (generated)" id="1500622513125-9">
+    <changeSet author="asokolov (generated)" id="1500816458165-8">
         <createIndex indexName="city_name_uindex" tableName="city" unique="true">
             <column name="name"/>
         </createIndex>
     </changeSet>
-    <changeSet author="asokolov (generated)" id="1500622513125-10">
+    <changeSet author="asokolov (generated)" id="1500816458165-9">
         <createIndex indexName="city_population_index" tableName="city">
             <column name="population"/>
         </createIndex>
     </changeSet>
-    <changeSet author="asokolov (generated)" id="1500622513125-11">
+    <changeSet author="asokolov (generated)" id="1500816458165-10">
         <createIndex indexName="organization_building_street_index" tableName="organization">
             <column name="building"/>
             <column name="street"/>
         </createIndex>
     </changeSet>
-    <changeSet author="asokolov (generated)" id="1500622513125-12">
+    <changeSet author="asokolov (generated)" id="1500816458165-11">
         <createIndex indexName="organization_modified_index" tableName="organization">
             <column name="modified"/>
         </createIndex>
     </changeSet>
-    <changeSet author="asokolov (generated)" id="1500622513125-13">
+    <changeSet author="asokolov (generated)" id="1500816458165-12">
         <createIndex indexName="organization_name_index" tableName="organization">
             <column name="name"/>
         </createIndex>
     </changeSet>
-    <changeSet author="asokolov (generated)" id="1500622513125-14">
+    <changeSet author="asokolov (generated)" id="1500816458165-13">
         <createIndex indexName="organization_www_uindex" tableName="organization" unique="true">
             <column name="www"/>
         </createIndex>
     </changeSet>
-    <changeSet author="asokolov (generated)" id="1500622513125-15">
+    <changeSet author="asokolov (generated)" id="1500816458165-14">
+        <createIndex indexName="phone_id_uindex" tableName="phone" unique="true">
+            <column name="id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="asokolov (generated)" id="1500816458165-15">
         <createIndex indexName="scope_name_uindex" tableName="scope" unique="true">
             <column name="name"/>
         </createIndex>
     </changeSet>
-    <changeSet author="asokolov (generated)" id="1500622513125-16">
+    <changeSet author="asokolov (generated)" id="1500816458165-16">
         <createIndex indexName="street_length_index" tableName="street">
             <column name="length"/>
         </createIndex>
     </changeSet>
-    <changeSet author="asokolov (generated)" id="1500622513125-17">
-        <addForeignKeyConstraint baseColumnNames="city" baseTableName="organization" constraintName="organization_city_id_fk" deferrable="false"
-                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id"
-                                 referencedTableName="city"/>
+    <changeSet author="asokolov (generated)" id="1500816458165-17">
+        <addForeignKeyConstraint baseColumnNames="city" baseTableName="organization" constraintName="organization_city_id_fk" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="city"/>
     </changeSet>
-    <changeSet author="asokolov (generated)" id="1500622513125-18">
-        <addForeignKeyConstraint baseColumnNames="scope" baseTableName="organization" constraintName="organization_scope_id_fk" deferrable="false"
-                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id"
-                                 referencedTableName="scope"/>
+    <changeSet author="asokolov (generated)" id="1500816458165-18">
+        <addForeignKeyConstraint baseColumnNames="scope" baseTableName="organization" constraintName="organization_scope_id_fk" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="scope"/>
     </changeSet>
-    <changeSet author="asokolov (generated)" id="1500622513125-19">
-        <addForeignKeyConstraint baseColumnNames="street" baseTableName="organization" constraintName="organization_street_id_fk" deferrable="false"
-                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id"
-                                 referencedTableName="street"/>
+    <changeSet author="asokolov (generated)" id="1500816458165-19">
+        <addForeignKeyConstraint baseColumnNames="street" baseTableName="organization" constraintName="organization_street_id_fk" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="street"/>
     </changeSet>
-    <changeSet author="asokolov (generated)" id="1500622513125-20">
-        <addForeignKeyConstraint baseColumnNames="organization_id" baseTableName="phone" constraintName="phone_organization_id_fk" deferrable="false"
-                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id"
-                                 referencedTableName="organization"/>
+    <changeSet author="asokolov (generated)" id="1500816458165-20">
+        <addForeignKeyConstraint baseColumnNames="organization_id" baseTableName="phone" constraintName="phone_organization_id_fk" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="organization"/>
     </changeSet>
-    <changeSet author="asokolov (generated)" id="1500622513125-21">
-        <addForeignKeyConstraint baseColumnNames="city_id" baseTableName="street" constraintName="street_city_id_fk" deferrable="false"
-                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id"
-                                 referencedTableName="city"/>
+    <changeSet author="asokolov (generated)" id="1500816458165-21">
+        <addForeignKeyConstraint baseColumnNames="city_id" baseTableName="street" constraintName="street_city_id_fk" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="city"/>
     </changeSet>
 </databaseChangeLog>

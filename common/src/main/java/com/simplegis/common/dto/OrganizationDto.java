@@ -1,4 +1,4 @@
-package com.simplegis.webservice.persistence.entity;
+package com.simplegis.common.dto;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -10,11 +10,11 @@ import java.sql.Timestamp;
 import java.util.List;
 
 /**
- * Organization entity.
+ * Organization data transfer object.
  */
-public class Organization implements Serializable {
+public class OrganizationDto implements Serializable {
 
-    private static final long serialVersionUID = -880383328;
+    private static final long serialVersionUID = -880383329;
 
     private BigInteger id;
     private String name;
@@ -24,11 +24,12 @@ public class Organization implements Serializable {
     private BigInteger city;
     private BigInteger street;
     private Integer scope;
+    private List<PhoneDto> phones;
 
-    public Organization() {
+    public OrganizationDto() {
     }
 
-    public Organization(Organization value) {
+    public OrganizationDto(OrganizationDto value) {
         this.id = value.id;
         this.name = value.name;
         this.building = value.building;
@@ -37,9 +38,10 @@ public class Organization implements Serializable {
         this.city = value.city;
         this.street = value.street;
         this.scope = value.scope;
+        this.phones = value.phones;
     }
 
-    public Organization(
+    public OrganizationDto(
             BigInteger id,
             String name,
             Integer building,
@@ -47,7 +49,8 @@ public class Organization implements Serializable {
             String www,
             BigInteger city,
             BigInteger street,
-            Integer scope
+            Integer scope,
+            List<PhoneDto> phones
     ) {
         this.id = id;
         this.name = name;
@@ -57,6 +60,7 @@ public class Organization implements Serializable {
         this.city = city;
         this.street = street;
         this.scope = scope;
+        this.phones = phones;
     }
 
     public static long getSerialVersionUID() {
@@ -127,6 +131,14 @@ public class Organization implements Serializable {
         this.scope = scope;
     }
 
+    public List<PhoneDto> getPhones() {
+        return phones;
+    }
+
+    public void setPhones(List<PhoneDto> phones) {
+        this.phones = phones;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -137,7 +149,7 @@ public class Organization implements Serializable {
             return false;
         }
 
-        Organization that = (Organization) o;
+        OrganizationDto that = (OrganizationDto) o;
 
         return new EqualsBuilder()
                 .append(id, that.id)
@@ -148,6 +160,7 @@ public class Organization implements Serializable {
                 .append(city, that.city)
                 .append(street, that.street)
                 .append(scope, that.scope)
+                .append(phones, that.phones)
                 .isEquals();
     }
 
@@ -162,6 +175,7 @@ public class Organization implements Serializable {
                 .append(city)
                 .append(street)
                 .append(scope)
+                .append(phones)
                 .toHashCode();
     }
 
@@ -176,6 +190,7 @@ public class Organization implements Serializable {
                 .append("city", city)
                 .append("street", street)
                 .append("scope", scope)
+                .append("phones", phones)
                 .toString();
     }
 }
