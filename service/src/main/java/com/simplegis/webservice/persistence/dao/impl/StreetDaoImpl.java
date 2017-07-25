@@ -7,7 +7,7 @@ import com.simplegis.webservice.persistence.util.BatchUpdateWithGeneratedKeys;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.support.JdbcDaoSupport;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
@@ -25,7 +25,10 @@ import java.util.Map;
  * Street data access object.
  */
 @Repository
-public class StreetDaoImpl extends JdbcDaoSupport implements StreetDao {
+public class StreetDaoImpl implements StreetDao {
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Autowired
     private BatchUpdateWithGeneratedKeys batchUpdateWithGeneratedKeys;
@@ -35,16 +38,16 @@ public class StreetDaoImpl extends JdbcDaoSupport implements StreetDao {
     public List<Street> getAll() {
         String sql = "SELECT * FROM simplegisdb.street st";
 
-        return getJdbcTemplate().query(sql, new BeanPropertyRowMapper<Street>());
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Street.class));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Street getById(BigInteger id) {
+    public Street getById(Long id) {
         String sql = "SELECT * FROM simplegisdb.street st WHERE st.id = ?";
         Object[] args = {id};
 
-        return getJdbcTemplate().queryForObject(sql, args, new BeanPropertyRowMapper<Street>());
+        return jdbcTemplate.queryForObject(sql, args, new BeanPropertyRowMapper<>(Street.class));
     }
 
     @Override
@@ -53,7 +56,7 @@ public class StreetDaoImpl extends JdbcDaoSupport implements StreetDao {
         String sql = "UPDATE simplegisdb.street st SET st.name = ?, st.city_id = ?, st.length = ?,  st.version = ?"
                 + " WHERE st.id = ? AND st.version = ?";
 
-        return getJdbcTemplate().update(sql,
+        return jdbcTemplate.update(sql,
                 street.getName(), street.getCityId(), street.getLength(), street.getVersion() + 1, street.getId(), street.getVersion());
     }
 
@@ -65,14 +68,14 @@ public class StreetDaoImpl extends JdbcDaoSupport implements StreetDao {
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
-        getJdbcTemplate().update(connection -> {
+        jdbcTemplate.update(connection -> {
             String[] columnNames = {"id"};
             PreparedStatement preparedStatement = connection.prepareStatement(sql, columnNames);
 
             int i = 0;
             preparedStatement.setString(++i, street.getName());
             preparedStatement.setBigDecimal(++i, street.getLength());
-            preparedStatement.setLong(++i, street.getCityId().longValue());
+            preparedStatement.setLong(++i, street.getCityId());
             preparedStatement.setLong(++i, 0);
 
 
@@ -80,7 +83,7 @@ public class StreetDaoImpl extends JdbcDaoSupport implements StreetDao {
 
         }, keyHolder);
 
-        street.setId(BigInteger.valueOf(keyHolder.getKey().longValue()));
+        street.setId(keyHolder.getKey().longValue());
         return street;
     }
 
@@ -102,7 +105,7 @@ public class StreetDaoImpl extends JdbcDaoSupport implements StreetDao {
                         int index = 0;
                         preparedStatement.setString(++index, street.getName());
                         preparedStatement.setBigDecimal(++index, street.getLength());
-                        preparedStatement.setLong(++index, street.getCityId().longValue());
+                        preparedStatement.setLong(++index, street.getCityId());
                         preparedStatement.setLong(++index, 0);
 
                     }
@@ -115,7 +118,7 @@ public class StreetDaoImpl extends JdbcDaoSupport implements StreetDao {
                 new GeneratedKeyHolder());
 
         for (int i = 0; i < streets.size(); i++) {
-            streets.get(i).setId(BigInteger.valueOf((long) generatedKeys.get(i).get("id")));
+            streets.get(i).setId((long) generatedKeys.get(i).get("id"));
         }
 
         return streets;
@@ -129,7 +132,7 @@ public class StreetDaoImpl extends JdbcDaoSupport implements StreetDao {
         String nToken = "%" + name + "%";
         Object[] args = {nToken};
 
-        return getJdbcTemplate().query(sql, args, new BeanPropertyRowMapper<Street>());
+        return jdbcTemplate.query(sql, args, new BeanPropertyRowMapper<>(Street.class));
     }
 
     @Override
@@ -139,21 +142,21 @@ public class StreetDaoImpl extends JdbcDaoSupport implements StreetDao {
 
         List<Object> args = new LinkedList<>();
 
-        if (maximumLength == null || BigDecimal.ZERO.equals(maximumLength)) {
-            sql = "SELECT * FROM simplegisdb.street st WHERE st.length >= ?";
-        } else {
-            args.add(maximumLength);
-        }
         if (minimalLength == null || BigDecimal.ZERO.equals(minimalLength)) {
             sql = "SELECT * FROM simplegisdb.street st WHERE st.length <= ?";
         } else {
             args.add(minimalLength);
         }
+        if (maximumLength == null || BigDecimal.ZERO.equals(maximumLength)) {
+            sql = "SELECT * FROM simplegisdb.street st WHERE st.length >= ?";
+        } else {
+            args.add(maximumLength);
+        }
 
         if (args.isEmpty()) {
             return null;
         } else {
-            return getJdbcTemplate().query(sql, args.toArray(), new BeanPropertyRowMapper<Street>());
+            return jdbcTemplate.query(sql, args.toArray(), new BeanPropertyRowMapper<>(Street.class));
         }
     }
 
@@ -165,7 +168,7 @@ public class StreetDaoImpl extends JdbcDaoSupport implements StreetDao {
         String nToken = "%" + name + "%";
         Object[] args = {cityId, nToken};
 
-        return getJdbcTemplate().query(sql, args, new BeanPropertyRowMapper<Street>());
+        return jdbcTemplate.query(sql, args, new BeanPropertyRowMapper<>(Street.class));
     }
 
     @Override
@@ -176,21 +179,21 @@ public class StreetDaoImpl extends JdbcDaoSupport implements StreetDao {
         List<Object> args = new LinkedList<>();
         args.add(cityId);
 
-        if (maximumLength == null || BigDecimal.ZERO.equals(maximumLength)) {
-            sql = "SELECT * FROM simplegisdb.street st WHERE st.city_id = ? AND st.length >= ?";
-        } else {
-            args.add(maximumLength);
-        }
         if (minimalLength == null || BigDecimal.ZERO.equals(minimalLength)) {
             sql = "SELECT * FROM simplegisdb.street st WHERE st.city_id = ? AND st.length <= ?";
         } else {
             args.add(minimalLength);
         }
+        if (maximumLength == null || BigDecimal.ZERO.equals(maximumLength)) {
+            sql = "SELECT * FROM simplegisdb.street st WHERE st.city_id = ? AND st.length >= ?";
+        } else {
+            args.add(maximumLength);
+        }
 
         if (args.size() == 1) {
             return null;
         } else {
-            return getJdbcTemplate().query(sql, args.toArray(), new BeanPropertyRowMapper<Street>());
+            return jdbcTemplate.query(sql, args.toArray(), new BeanPropertyRowMapper<>(Street.class));
         }
     }
 }

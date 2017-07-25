@@ -41,7 +41,7 @@ public class StreetController {
      * @return specified street dto or null if it does not exist
      */
     @RequestMapping(method = RequestMethod.GET, value = "/getById/{id}")
-    public StreetDto getById(@PathVariable("id") BigInteger id) {
+    public StreetDto getById(@PathVariable("id") Long id) {
         LOG.info("Received street/getById/{} request", id);
         return StreetMapper.toDto(streetService.getById(id));
     }

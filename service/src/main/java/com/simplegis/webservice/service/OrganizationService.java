@@ -3,7 +3,9 @@ package com.simplegis.webservice.service;
 import com.simplegis.webservice.persistence.dao.OrganizationDao;
 import com.simplegis.webservice.persistence.dao.PhoneDao;
 import com.simplegis.webservice.persistence.dao.ScopeDao;
-import com.simplegis.webservice.persistence.entity.*;
+import com.simplegis.webservice.persistence.entity.Organization;
+import com.simplegis.webservice.persistence.entity.Phone;
+import com.simplegis.webservice.persistence.entity.Scope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +42,7 @@ public class OrganizationService {
      * @param id
      * @return
      */
-    public Organization getById(BigInteger id) {
+    public Organization getById(Long id) {
         return organizationDao.getById(id);
     }
 
@@ -134,7 +136,7 @@ public class OrganizationService {
      * @param orgId
      * @return
      */
-    public List<Phone> getPhonesByOrganizationId(BigInteger orgId) {
+    public List<Phone> getPhonesByOrganizationId(Long orgId) {
         return phoneDao.getByOrganizationId(orgId);
     }
 

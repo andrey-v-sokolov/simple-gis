@@ -6,7 +6,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 
 /**
  * Street entity.
@@ -15,10 +14,10 @@ public class Street implements Serializable {
 
     private static final long serialVersionUID = -38262671;
 
-    private BigInteger id;
+    private Long id;
     private String name;
     private BigDecimal length;
-    private BigInteger cityId;
+    private Long cityId;
     private Integer version;
 
     public Street() {
@@ -33,10 +32,10 @@ public class Street implements Serializable {
     }
 
     public Street(
-            BigInteger id,
+            Long id,
             String name,
             BigDecimal length,
-            BigInteger cityId,
+            Long cityId,
             Integer version
     ) {
         this.id = id;
@@ -50,11 +49,11 @@ public class Street implements Serializable {
         return serialVersionUID;
     }
 
-    public BigInteger getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(BigInteger id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -74,11 +73,11 @@ public class Street implements Serializable {
         this.length = length;
     }
 
-    public BigInteger getCityId() {
+    public Long getCityId() {
         return cityId;
     }
 
-    public void setCityId(BigInteger cityId) {
+    public void setCityId(Long cityId) {
         this.cityId = cityId;
     }
 

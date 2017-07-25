@@ -4,12 +4,15 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd"
                    logicalFilePath="changelog-1.0.xml">
 
+    <property name="clob.type" value="TEXT" dbms="postgresql"/>
+    <property name="clob.type" value="VARCHAR" dbms="h2"/>
+
     <changeSet author="asokolov (generated)" id="1500816458165-1">
         <createTable tableName="city">
             <column autoIncrement="true" name="id" type="BIGSERIAL">
                 <constraints primaryKey="true" primaryKeyName="city_pkey"/>
             </column>
-            <column name="name" type="TEXT">
+            <column name="name" type="${clob.type}">
                 <constraints nullable="false"/>
             </column>
             <column defaultValueNumeric="0" name="area" type="numeric">
@@ -28,7 +31,7 @@
             <column autoIncrement="true" name="id" type="BIGSERIAL">
                 <constraints primaryKey="true" primaryKeyName="organization_pkey"/>
             </column>
-            <column name="name" type="TEXT">
+            <column name="name" type="${clob.type}">
                 <constraints nullable="false"/>
             </column>
             <column name="building" type="INT">
@@ -37,7 +40,7 @@
             <column defaultValueComputed="now()" name="modified" type="TIMESTAMP(6) WITHOUT TIME ZONE">
                 <constraints nullable="false"/>
             </column>
-            <column name="www" type="TEXT"/>
+            <column name="www" type="${clob.type}"/>
             <column name="city" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
@@ -70,7 +73,7 @@
             <column autoIncrement="true" name="id" type="SERIAL">
                 <constraints primaryKey="true" primaryKeyName="scope_pkey"/>
             </column>
-            <column name="name" type="TEXT">
+            <column name="name" type="${clob.type}">
                 <constraints nullable="false"/>
             </column>
             <column defaultValueNumeric="0" name="version" type="INT">
@@ -83,7 +86,7 @@
             <column autoIncrement="true" name="id" type="BIGSERIAL">
                 <constraints primaryKey="true" primaryKeyName="street_pkey"/>
             </column>
-            <column name="name" type="TEXT">
+            <column name="name" type="${clob.type}">
                 <constraints nullable="false"/>
             </column>
             <column defaultValueNumeric="0" name="length" type="numeric">

@@ -5,7 +5,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.Serializable;
-import java.math.BigInteger;
 import java.sql.Timestamp;
 
 /**
@@ -15,13 +14,13 @@ public class Organization implements Serializable {
 
     private static final long serialVersionUID = -880383328;
 
-    private BigInteger id;
+    private Long id;
     private String name;
     private Integer building;
     private Timestamp modified;
     private String www;
-    private BigInteger city;
-    private BigInteger street;
+    private Long city;
+    private Long street;
     private Integer scope;
 
     public Organization() {
@@ -39,13 +38,13 @@ public class Organization implements Serializable {
     }
 
     public Organization(
-            BigInteger id,
+            Long id,
             String name,
             Integer building,
             Timestamp modified,
             String www,
-            BigInteger city,
-            BigInteger street,
+            Long city,
+            Long street,
             Integer scope
     ) {
         this.id = id;
@@ -62,11 +61,11 @@ public class Organization implements Serializable {
         return serialVersionUID;
     }
 
-    public BigInteger getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(BigInteger id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -102,19 +101,19 @@ public class Organization implements Serializable {
         this.www = www;
     }
 
-    public BigInteger getCity() {
+    public Long getCity() {
         return city;
     }
 
-    public void setCity(BigInteger city) {
+    public void setCity(Long city) {
         this.city = city;
     }
 
-    public BigInteger getStreet() {
+    public Long getStreet() {
         return street;
     }
 
-    public void setStreet(BigInteger street) {
+    public void setStreet(Long street) {
         this.street = street;
     }
 

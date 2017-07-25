@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -34,7 +33,7 @@ public class CityService {
      * @param id
      * @return
      */
-    public City getById(BigInteger id) {
+    public City getById(Long id) {
         return cityDao.getById(id);
     }
 

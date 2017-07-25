@@ -7,13 +7,12 @@ import com.simplegis.webservice.persistence.util.BatchUpdateWithGeneratedKeys;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.support.JdbcDaoSupport;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigInteger;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
@@ -23,7 +22,10 @@ import java.util.Map;
  * Scope data access object.
  */
 @Repository
-public class ScopeDaoImpl extends JdbcDaoSupport implements ScopeDao {
+public class ScopeDaoImpl implements ScopeDao {
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Autowired
     private BatchUpdateWithGeneratedKeys batchUpdateWithGeneratedKeys;
@@ -33,25 +35,25 @@ public class ScopeDaoImpl extends JdbcDaoSupport implements ScopeDao {
     public List<Scope> getAll() {
         String sql = "SELECT * FROM simplegisdb.scope s";
 
-        return getJdbcTemplate().query(sql, new BeanPropertyRowMapper<Scope>());
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Scope.class));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Scope getById(BigInteger id) {
+    public Scope getById(Long id) {
         String sql = "SELECT * FROM simplegisdb.scope s WHERE s.id = ?";
         Object[] args = {id};
 
-        return getJdbcTemplate().queryForObject(sql, args, new BeanPropertyRowMapper<Scope>());
+        return jdbcTemplate.queryForObject(sql, args, new BeanPropertyRowMapper<>(Scope.class));
     }
 
     @Override
     @Transactional
     public Integer update(Scope scope) {
-        String sql = "UPDATE simplegisdb.scope s SET s.name = ?, s.version = ?"
-                + " WHERE s.id = ? AND s.version = ?";
+        String sql = "UPDATE simplegisdb.scope SET name = ?, version = ?"
+                + " WHERE id = ? AND version = ?";
 
-        return getJdbcTemplate().update(sql,
+        return jdbcTemplate.update(sql,
                 scope.getName(), scope.getVersion() + 1, scope.getId(), scope.getVersion());
     }
 
@@ -63,7 +65,7 @@ public class ScopeDaoImpl extends JdbcDaoSupport implements ScopeDao {
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
-        getJdbcTemplate().update(connection -> {
+        jdbcTemplate.update(connection -> {
             String[] columnNames = {"id"};
             PreparedStatement preparedStatement = connection.prepareStatement(sql, columnNames);
 

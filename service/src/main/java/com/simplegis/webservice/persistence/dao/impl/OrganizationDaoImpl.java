@@ -7,7 +7,7 @@ import com.simplegis.webservice.persistence.util.BatchUpdateWithGeneratedKeys;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.support.JdbcDaoSupport;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
@@ -25,7 +25,10 @@ import java.util.Map;
  * Organization data access object.
  */
 @Repository
-public class OrganizationDaoImpl extends JdbcDaoSupport implements OrganizationDao {
+public class OrganizationDaoImpl implements OrganizationDao {
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Autowired
     private BatchUpdateWithGeneratedKeys batchUpdateWithGeneratedKeys;
@@ -35,27 +38,27 @@ public class OrganizationDaoImpl extends JdbcDaoSupport implements OrganizationD
     public List<Organization> getAll() {
         String sql = "SELECT * FROM simplegisdb.organization o";
 
-        return getJdbcTemplate().query(sql, new BeanPropertyRowMapper<Organization>());
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Organization.class));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Organization getById(BigInteger id) {
+    public Organization getById(Long id) {
         String sql = "SELECT * FROM simplegisdb.organization o WHERE o.id = ?";
         Object[] args = {id};
 
-        return getJdbcTemplate().queryForObject(sql, args, new BeanPropertyRowMapper<Organization>());
+        return jdbcTemplate.queryForObject(sql, args, new BeanPropertyRowMapper<>(Organization.class));
     }
 
     @Override
     @Transactional
     public Integer update(Organization organization) {
         //Using modified field as version for optimistic locking.
-        String sql = "UPDATE simplegisdb.organization o"
-                + " SET o.name = ?, o.street = ?, o.scope = ?, o.building = ?, o.city =?, o.www = ?, o.modified = ?"
-                + " WHERE o.id = ? AND o.modified = ?";
+        String sql = "UPDATE simplegisdb.organization"
+                + " SET name = ?, street = ?, scope = ?, building = ?, city =?, www = ?, modified = ?"
+                + " WHERE id = ? AND modified = ?";
 
-        return getJdbcTemplate().update(sql,
+        return jdbcTemplate.update(sql,
                 organization.getName(), organization.getStreet(), organization.getScope(), organization.getBuilding(),
                 organization.getCity(), organization.getWww(), new Timestamp(Calendar.getInstance().getTime().getTime()),
                 organization.getId(), organization.getModified());
@@ -69,14 +72,14 @@ public class OrganizationDaoImpl extends JdbcDaoSupport implements OrganizationD
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
-        getJdbcTemplate().update(connection -> {
+        jdbcTemplate.update(connection -> {
             String[] columnNames = {"id"};
             PreparedStatement preparedStatement = connection.prepareStatement(sql, columnNames);
 
             int i = 0;
             preparedStatement.setString(++i, organization.getName());
-            preparedStatement.setLong(++i, organization.getCity().longValue());
-            preparedStatement.setLong(++i, organization.getStreet().longValue());
+            preparedStatement.setLong(++i, organization.getCity());
+            preparedStatement.setLong(++i, organization.getStreet());
             preparedStatement.setInt(++i, organization.getBuilding());
             preparedStatement.setInt(++i, organization.getScope());
             preparedStatement.setTimestamp(++i, new Timestamp(Calendar.getInstance().getTime().getTime()));
@@ -86,7 +89,7 @@ public class OrganizationDaoImpl extends JdbcDaoSupport implements OrganizationD
 
         }, keyHolder);
 
-        organization.setId(BigInteger.valueOf(keyHolder.getKey().longValue()));
+        organization.setId(keyHolder.getKey().longValue());
         return organization;
     }
 
@@ -107,8 +110,8 @@ public class OrganizationDaoImpl extends JdbcDaoSupport implements OrganizationD
 
                         int index = 0;
                         preparedStatement.setString(++index, organization.getName());
-                        preparedStatement.setLong(++index, organization.getCity().longValue());
-                        preparedStatement.setLong(++index, organization.getStreet().longValue());
+                        preparedStatement.setLong(++index, organization.getCity());
+                        preparedStatement.setLong(++index, organization.getStreet());
                         preparedStatement.setInt(++index, organization.getBuilding());
                         preparedStatement.setInt(++index, organization.getScope());
                         preparedStatement.setTimestamp(++index, new Timestamp(Calendar.getInstance().getTime().getTime()));
@@ -123,7 +126,7 @@ public class OrganizationDaoImpl extends JdbcDaoSupport implements OrganizationD
                 new GeneratedKeyHolder());
 
         for (int i = 0; i < organizations.size(); i++) {
-            organizations.get(i).setId(BigInteger.valueOf((long) generatedKeys.get(i).get("id")));
+            organizations.get(i).setId((long) generatedKeys.get(i).get("id"));
         }
 
         return organizations;
@@ -137,7 +140,7 @@ public class OrganizationDaoImpl extends JdbcDaoSupport implements OrganizationD
         String nToken = "%" + name + "%";
         Object[] args = {nToken};
 
-        return getJdbcTemplate().query(sql, args, new BeanPropertyRowMapper<Organization>());
+        return jdbcTemplate.query(sql, args, new BeanPropertyRowMapper<>(Organization.class));
     }
 
     @Override
@@ -146,7 +149,7 @@ public class OrganizationDaoImpl extends JdbcDaoSupport implements OrganizationD
         String sql = "SELECT * FROM simplegisdb.organization o WHERE o.city = ?";
         Object[] args = {cityId};
 
-        return getJdbcTemplate().query(sql, args, new BeanPropertyRowMapper<Organization>());
+        return jdbcTemplate.query(sql, args, new BeanPropertyRowMapper<>(Organization.class));
     }
 
     @Override
@@ -155,7 +158,7 @@ public class OrganizationDaoImpl extends JdbcDaoSupport implements OrganizationD
         String sql = "SELECT * FROM simplegisdb.organization o WHERE o.city = ? AND o.street = ?";
         Object[] args = {cityId, streetId};
 
-        return getJdbcTemplate().query(sql, args, new BeanPropertyRowMapper<Organization>());
+        return jdbcTemplate.query(sql, args, new BeanPropertyRowMapper<>(Organization.class));
     }
 
     @Override
@@ -164,7 +167,7 @@ public class OrganizationDaoImpl extends JdbcDaoSupport implements OrganizationD
         String sql = "SELECT * FROM simplegisdb.organization o WHERE o.city = ? AND o.street = ? AND o.building = ?";
         Object[] args = {cityId, streetId, building};
 
-        return getJdbcTemplate().query(sql, args, new BeanPropertyRowMapper<Organization>());
+        return jdbcTemplate.query(sql, args, new BeanPropertyRowMapper<>(Organization.class));
     }
 
     @Override
@@ -179,7 +182,7 @@ public class OrganizationDaoImpl extends JdbcDaoSupport implements OrganizationD
         String gToken = "%" + geoToken + "%";
         Object[] args = {oToken, oToken, gToken, gToken};
 
-        return getJdbcTemplate().query(sql, args, new BeanPropertyRowMapper<Organization>());
+        return jdbcTemplate.query(sql, args, new BeanPropertyRowMapper<>(Organization.class));
     }
 
     @Override
@@ -187,6 +190,6 @@ public class OrganizationDaoImpl extends JdbcDaoSupport implements OrganizationD
         String sql = "SELECT * FROM simplegisdb.organization o WHERE o.modified >= ?";
         Object[] args = {timestamp};
 
-        return getJdbcTemplate().query(sql, args, new BeanPropertyRowMapper<Organization>());
+        return jdbcTemplate.query(sql, args, new BeanPropertyRowMapper<>(Organization.class));
     }
 }

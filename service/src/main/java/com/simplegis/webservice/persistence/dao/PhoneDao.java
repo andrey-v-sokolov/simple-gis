@@ -2,7 +2,6 @@ package com.simplegis.webservice.persistence.dao;
 
 import com.simplegis.webservice.persistence.entity.Phone;
 
-import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -22,5 +21,5 @@ public interface PhoneDao extends GenericDao<Phone> {
      * @param orgId
      * @return
      */
-    List<Phone> getByOrganizationId(BigInteger orgId);
+    List<Phone> getByOrganizationId(Long orgId);
 }

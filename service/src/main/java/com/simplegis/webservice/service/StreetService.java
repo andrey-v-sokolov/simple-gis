@@ -34,7 +34,7 @@ public class StreetService {
      * @param id
      * @return
      */
-    public Street getById(BigInteger id) {
+    public Street getById(Long id) {
         return streetDao.getById(id);
     }
 

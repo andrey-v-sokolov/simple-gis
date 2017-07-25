@@ -5,7 +5,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.Serializable;
-import java.math.BigInteger;
 
 /**
  * Phone data transfer object.
@@ -14,9 +13,9 @@ public class PhoneDto implements Serializable {
 
     private static final long serialVersionUID = -1975356728;
 
-    private BigInteger id;
+    private Long id;
     private String number;
-    private BigInteger organizationId;
+    private Long organizationId;
     private Integer version;
 
     public PhoneDto() {
@@ -30,9 +29,9 @@ public class PhoneDto implements Serializable {
     }
 
     public PhoneDto(
-            BigInteger id,
+            Long id,
             String number,
-            BigInteger organizationId,
+            Long organizationId,
             Integer version
     ) {
         this.id = id;
@@ -45,11 +44,11 @@ public class PhoneDto implements Serializable {
         return serialVersionUID;
     }
 
-    public BigInteger getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(BigInteger id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -61,11 +60,11 @@ public class PhoneDto implements Serializable {
         this.number = number;
     }
 
-    public BigInteger getOrganizationId() {
+    public Long getOrganizationId() {
         return organizationId;
     }
 
-    public void setOrganizationId(BigInteger organizationId) {
+    public void setOrganizationId(Long organizationId) {
         this.organizationId = organizationId;
     }
 

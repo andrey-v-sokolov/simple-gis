@@ -6,7 +6,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 
 /**
  * City entity.
@@ -15,7 +14,7 @@ public class City implements Serializable {
 
     private static final long serialVersionUID = -1826957841;
 
-    private BigInteger id;
+    private Long id;
     private String name;
     private BigDecimal area;
     private Integer population;
@@ -33,7 +32,7 @@ public class City implements Serializable {
     }
 
     public City(
-            BigInteger id,
+            Long id,
             String name,
             BigDecimal area,
             Integer population,
@@ -50,11 +49,11 @@ public class City implements Serializable {
         return serialVersionUID;
     }
 
-    public BigInteger getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(BigInteger id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

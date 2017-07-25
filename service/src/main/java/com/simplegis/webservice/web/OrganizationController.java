@@ -55,7 +55,7 @@ public class OrganizationController {
      * @return specified organization dto or null if it does not exist
      */
     @RequestMapping(method = RequestMethod.GET, value = "/getById/{id}")
-    public OrganizationDto getById(@PathVariable("id") BigInteger id) {
+    public OrganizationDto getById(@PathVariable("id") Long id) {
         LOG.info("Received organization/getById/{} request", id);
 
         return OrganizationMapper.toDto(organizationService.getById(id),
@@ -107,7 +107,7 @@ public class OrganizationController {
                 organizationDtos.stream().map(OrganizationMapper::fromDto).collect(Collectors.toList())
         );
 
-        Map<BigInteger, List<Phone>> organizationPhones = new HashMap<>();
+        Map<Long, List<Phone>> organizationPhones = new HashMap<>();
 
         // Hibernate (for example) basically would do the same. In case of one to many relations e.g. A contains B's - it will insert A, obtain its Id
         // and then insert B's. Not sure if there is a reason to try lower the number of queries to DB by batch inserting phones and chewing them up

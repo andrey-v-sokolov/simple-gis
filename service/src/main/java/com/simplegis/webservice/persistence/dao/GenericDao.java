@@ -1,6 +1,5 @@
 package com.simplegis.webservice.persistence.dao;
 
-import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -22,7 +21,7 @@ public interface GenericDao<T> {
      * @param id of an object
      * @return city or null
      */
-    T getById(BigInteger id);
+    T getById(Long id);
 
     /**
      * Update object by id.

@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,7 +43,7 @@ public class CityController {
      * @return specified city dto or null if it does not exist
      */
     @RequestMapping(method = RequestMethod.GET, value = "/getById/{id}")
-    public CityDto getById(@PathVariable("id") BigInteger id) {
+    public CityDto getById(@PathVariable("id") Long id) {
         LOG.info("Received city/getById/{} request", id);
 
         return CityMapper.toDto(cityService.getById(id));
