@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Steet controller class.
+ * Street controller class.
  */
 @RestController
 @RequestMapping("/street")
