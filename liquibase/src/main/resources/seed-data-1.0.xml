@@ -3,5 +3,413 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd"
                    logicalFilePath="seed-data-1.0.xml">
-
+    <changeSet author="asokolov (generated)" id="1501005089678-1">
+        <insert tableName="city">
+            <column name="id" valueNumeric="1"/>
+            <column name="name" value="Бердск"/>
+            <column name="area" valueNumeric="67"/>
+            <column name="population" valueNumeric="102000"/>
+            <column name="version" valueNumeric="0"/>
+        </insert>
+        <insert tableName="city">
+            <column name="id" valueNumeric="2"/>
+            <column name="name" value="Новосибирск"/>
+            <column name="area" valueNumeric="502"/>
+            <column name="population" valueNumeric="1500000"/>
+            <column name="version" valueNumeric="0"/>
+        </insert>
+        <insert tableName="city">
+            <column name="id" valueNumeric="3"/>
+            <column name="name" value="Барнаул"/>
+            <column name="area" valueNumeric="321"/>
+            <column name="population" valueNumeric="625000"/>
+            <column name="version" valueNumeric="0"/>
+        </insert>
+    </changeSet>
+    <changeSet author="asokolov (generated)" id="1501005089678-4">
+        <insert tableName="scope">
+            <column name="id" valueNumeric="1"/>
+            <column name="name" value="Фаст-фуд"/>
+            <column name="version" valueNumeric="0"/>
+            <column name="key_words" value="поесть перекусить пообедать "/>
+        </insert>
+        <insert tableName="scope">
+            <column name="id" valueNumeric="2"/>
+            <column name="name" value="Парикмахерская"/>
+            <column name="version" valueNumeric="0"/>
+            <column name="key_words" value="постричься побриться"/>
+        </insert>
+        <insert tableName="scope">
+            <column name="id" valueNumeric="3"/>
+            <column name="name" value="Бар"/>
+            <column name="version" valueNumeric="0"/>
+            <column name="key_words" value="перекусить выпить отдохнуть "/>
+        </insert>
+        <insert tableName="scope">
+            <column name="id" valueNumeric="4"/>
+            <column name="name" value="Кафе"/>
+            <column name="version" valueNumeric="0"/>
+            <column name="key_words" value="перекусить коктейль кофе ланч"/>
+        </insert>
+        <insert tableName="scope">
+            <column name="id" valueNumeric="5"/>
+            <column name="name" value="Ресторан"/>
+            <column name="version" valueNumeric="0"/>
+            <column name="key_words" value="поесть перекусить пообедать поужинать "/>
+        </insert>
+        <insert tableName="scope">
+            <column name="id" valueNumeric="6"/>
+            <column name="name" value="Музей"/>
+            <column name="version" valueNumeric="0"/>
+            <column name="key_words" value="посмотреть культура"/>
+        </insert>
+        <insert tableName="scope">
+            <column name="id" valueNumeric="7"/>
+            <column name="name" value="Кинотеатр"/>
+            <column name="version" valueNumeric="0"/>
+            <column name="key_words" value="отдохнуть посмотреть "/>
+        </insert>
+        <insert tableName="scope">
+            <column name="id" valueNumeric="8"/>
+            <column name="name" value="Стриптиз-клуб"/>
+            <column name="version" valueNumeric="0"/>
+            <column name="key_words" value="перекусить выпить отдохнуть посмотреть"/>
+        </insert>
+        <insert tableName="scope">
+            <column name="id" valueNumeric="9"/>
+            <column name="name" value="Супермаркет"/>
+            <column name="version" valueNumeric="0"/>
+            <column name="key_words" value="перекусить шоппинг"/>
+        </insert>
+    </changeSet>
+    <changeSet author="asokolov (generated)" id="1501005089678-5">
+        <insert tableName="street">
+            <column name="id" valueNumeric="2"/>
+            <column name="name" value="Ленина"/>
+            <column name="length" valueNumeric="3500"/>
+            <column name="city_id" valueNumeric="1"/>
+            <column name="version" valueNumeric="0"/>
+        </insert>
+        <insert tableName="street">
+            <column name="id" valueNumeric="3"/>
+            <column name="name" value="Ильича"/>
+            <column name="length" valueNumeric="700"/>
+            <column name="city_id" valueNumeric="2"/>
+            <column name="version" valueNumeric="0"/>
+        </insert>
+        <insert tableName="street">
+            <column name="id" valueNumeric="4"/>
+            <column name="name" value="Ленина"/>
+            <column name="length" valueNumeric="1500"/>
+            <column name="city_id" valueNumeric="2"/>
+            <column name="version" valueNumeric="0"/>
+        </insert>
+        <insert tableName="street">
+            <column name="id" valueNumeric="5"/>
+            <column name="name" value="Владимирская"/>
+            <column name="length" valueNumeric="1100"/>
+            <column name="city_id" valueNumeric="1"/>
+            <column name="version" valueNumeric="0"/>
+        </insert>
+        <insert tableName="street">
+            <column name="id" valueNumeric="6"/>
+            <column name="name" value="Ульяновская"/>
+            <column name="length" valueNumeric="400"/>
+            <column name="city_id" valueNumeric="3"/>
+            <column name="version" valueNumeric="0"/>
+        </insert>
+        <insert tableName="street">
+            <column name="id" valueNumeric="7"/>
+            <column name="name" value="Ленина"/>
+            <column name="length" valueNumeric="1200"/>
+            <column name="city_id" valueNumeric="3"/>
+            <column name="version" valueNumeric="0"/>
+        </insert>
+    </changeSet>
+    <changeSet author="asokolov (generated)" id="1501005089678-2">
+        <insert tableName="organization">
+            <column name="id" valueNumeric="1"/>
+            <column name="name" value="Евросалон"/>
+            <column name="building" valueNumeric="2"/>
+            <column name="modified" valueDate="2017-07-26 00:44:29.195875"/>
+            <column name="www"/>
+            <column name="city" valueNumeric="1"/>
+            <column name="street" valueNumeric="2"/>
+            <column name="scope" valueNumeric="5"/>
+        </insert>
+        <insert tableName="organization">
+            <column name="id" valueNumeric="2"/>
+            <column name="name" value="Ориенталь"/>
+            <column name="building" valueNumeric="6"/>
+            <column name="modified" valueDate="2017-07-26 00:44:29.195875"/>
+            <column name="www" value="http://www.site.com"/>
+            <column name="city" valueNumeric="1"/>
+            <column name="street" valueNumeric="5"/>
+            <column name="scope" valueNumeric="1"/>
+        </insert>
+        <insert tableName="organization">
+            <column name="id" valueNumeric="3"/>
+            <column name="name" value="СанСет"/>
+            <column name="building" valueNumeric="74"/>
+            <column name="modified" valueDate="2017-07-26 00:44:29.195875"/>
+            <column name="www"/>
+            <column name="city" valueNumeric="1"/>
+            <column name="street" valueNumeric="5"/>
+            <column name="scope" valueNumeric="3"/>
+        </insert>
+        <insert tableName="organization">
+            <column name="id" valueNumeric="4"/>
+            <column name="name" value="Формула "/>
+            <column name="building" valueNumeric="3"/>
+            <column name="modified" valueDate="2017-07-26 00:44:29.195875"/>
+            <column name="www"/>
+            <column name="city" valueNumeric="1"/>
+            <column name="street" valueNumeric="2"/>
+            <column name="scope" valueNumeric="2"/>
+        </insert>
+        <insert tableName="organization">
+            <column name="id" valueNumeric="5"/>
+            <column name="name" value="Стрела"/>
+            <column name="building" valueNumeric="6"/>
+            <column name="modified" valueDate="2017-07-26 00:44:29.195875"/>
+            <column name="www"/>
+            <column name="city" valueNumeric="1"/>
+            <column name="street" valueNumeric="2"/>
+            <column name="scope" valueNumeric="4"/>
+        </insert>
+        <insert tableName="organization">
+            <column name="id" valueNumeric="6"/>
+            <column name="name" value="Источник"/>
+            <column name="building" valueNumeric="8"/>
+            <column name="modified" valueDate="2017-07-26 00:44:29.195875"/>
+            <column name="www"/>
+            <column name="city" valueNumeric="1"/>
+            <column name="street" valueNumeric="2"/>
+            <column name="scope" valueNumeric="9"/>
+        </insert>
+        <insert tableName="organization">
+            <column name="id" valueNumeric="7"/>
+            <column name="name" value="СанСет"/>
+            <column name="building" valueNumeric="3"/>
+            <column name="modified" valueDate="2017-07-26 00:44:29.195875"/>
+            <column name="www" value="www.example.org"/>
+            <column name="city" valueNumeric="2"/>
+            <column name="street" valueNumeric="3"/>
+            <column name="scope" valueNumeric="8"/>
+        </insert>
+        <insert tableName="organization">
+            <column name="id" valueNumeric="8"/>
+            <column name="name" value="Осто"/>
+            <column name="building" valueNumeric="35"/>
+            <column name="modified" valueDate="2017-07-26 00:44:29.195875"/>
+            <column name="www"/>
+            <column name="city" valueNumeric="2"/>
+            <column name="street" valueNumeric="4"/>
+            <column name="scope" valueNumeric="2"/>
+        </insert>
+        <insert tableName="organization">
+            <column name="id" valueNumeric="9"/>
+            <column name="name" value="Янтарь"/>
+            <column name="building" valueNumeric="67"/>
+            <column name="modified" valueDate="2017-07-26 00:44:29.195875"/>
+            <column name="www"/>
+            <column name="city" valueNumeric="2"/>
+            <column name="street" valueNumeric="3"/>
+            <column name="scope" valueNumeric="7"/>
+        </insert>
+        <insert tableName="organization">
+            <column name="id" valueNumeric="10"/>
+            <column name="name" value="РЕАЛ"/>
+            <column name="building" valueNumeric="85"/>
+            <column name="modified" valueDate="2017-07-26 00:44:29.195875"/>
+            <column name="www" value="webportal.net"/>
+            <column name="city" valueNumeric="2"/>
+            <column name="street" valueNumeric="4"/>
+            <column name="scope" valueNumeric="5"/>
+        </insert>
+        <insert tableName="organization">
+            <column name="id" valueNumeric="11"/>
+            <column name="name" value="Штандарт"/>
+            <column name="building" valueNumeric="3"/>
+            <column name="modified" valueDate="2017-07-26 00:44:29.195875"/>
+            <column name="www"/>
+            <column name="city" valueNumeric="2"/>
+            <column name="street" valueNumeric="3"/>
+            <column name="scope" valueNumeric="6"/>
+        </insert>
+        <insert tableName="organization">
+            <column name="id" valueNumeric="12"/>
+            <column name="name" value="ДИНГО"/>
+            <column name="building" valueNumeric="54"/>
+            <column name="modified" valueDate="2017-07-26 00:44:29.195875"/>
+            <column name="www"/>
+            <column name="city" valueNumeric="2"/>
+            <column name="street" valueNumeric="4"/>
+            <column name="scope" valueNumeric="9"/>
+        </insert>
+        <insert tableName="organization">
+            <column name="id" valueNumeric="13"/>
+            <column name="name" value="РЕАЛ"/>
+            <column name="building" valueNumeric="79"/>
+            <column name="modified" valueDate="2017-07-26 00:44:29.195875"/>
+            <column name="www"/>
+            <column name="city" valueNumeric="3"/>
+            <column name="street" valueNumeric="6"/>
+            <column name="scope" valueNumeric="3"/>
+        </insert>
+        <insert tableName="organization">
+            <column name="id" valueNumeric="14"/>
+            <column name="name" value="Ярмарка "/>
+            <column name="building" valueNumeric="34"/>
+            <column name="modified" valueDate="2017-07-26 00:44:29.195875"/>
+            <column name="www"/>
+            <column name="city" valueNumeric="3"/>
+            <column name="street" valueNumeric="6"/>
+            <column name="scope" valueNumeric="4"/>
+        </insert>
+        <insert tableName="organization">
+            <column name="id" valueNumeric="15"/>
+            <column name="name" value="Формула"/>
+            <column name="building" valueNumeric="72"/>
+            <column name="modified" valueDate="2017-07-26 00:44:29.195875"/>
+            <column name="www"/>
+            <column name="city" valueNumeric="3"/>
+            <column name="street" valueNumeric="6"/>
+            <column name="scope" valueNumeric="2"/>
+        </insert>
+        <insert tableName="organization">
+            <column name="id" valueNumeric="16"/>
+            <column name="name" value="ДИНГО"/>
+            <column name="building" valueNumeric="58"/>
+            <column name="modified" valueDate="2017-07-26 00:44:29.195875"/>
+            <column name="www"/>
+            <column name="city" valueNumeric="3"/>
+            <column name="street" valueNumeric="7"/>
+            <column name="scope" valueNumeric="5"/>
+        </insert>
+        <insert tableName="organization">
+            <column name="id" valueNumeric="17"/>
+            <column name="name" value="Цитрус"/>
+            <column name="building" valueNumeric="97"/>
+            <column name="modified" valueDate="2017-07-26 00:44:29.195875"/>
+            <column name="www"/>
+            <column name="city" valueNumeric="3"/>
+            <column name="street" valueNumeric="7"/>
+            <column name="scope" valueNumeric="1"/>
+        </insert>
+        <insert tableName="organization">
+            <column name="id" valueNumeric="18"/>
+            <column name="name" value="Кратер"/>
+            <column name="building" valueNumeric="44"/>
+            <column name="modified" valueDate="2017-07-26 00:44:29.195875"/>
+            <column name="www"/>
+            <column name="city" valueNumeric="3"/>
+            <column name="street" valueNumeric="7"/>
+            <column name="scope" valueNumeric="9"/>
+        </insert>
+    </changeSet>
+    <changeSet author="asokolov (generated)" id="1501005089678-3">
+        <insert tableName="phone">
+            <column name="number" value="333222111"/>
+            <column name="organization_id" valueNumeric="1"/>
+            <column name="id" valueNumeric="1"/>
+            <column name="version" valueNumeric="0"/>
+        </insert>
+        <insert tableName="phone">
+            <column name="number" value="222333111 (123)"/>
+            <column name="organization_id" valueNumeric="1"/>
+            <column name="id" valueNumeric="2"/>
+            <column name="version" valueNumeric="0"/>
+        </insert>
+        <insert tableName="phone">
+            <column name="number" value="232323232"/>
+            <column name="organization_id" valueNumeric="2"/>
+            <column name="id" valueNumeric="3"/>
+            <column name="version" valueNumeric="0"/>
+        </insert>
+        <insert tableName="phone">
+            <column name="number" value="323232323"/>
+            <column name="organization_id" valueNumeric="2"/>
+            <column name="id" valueNumeric="4"/>
+            <column name="version" valueNumeric="0"/>
+        </insert>
+        <insert tableName="phone">
+            <column name="number" value="223322332"/>
+            <column name="organization_id" valueNumeric="3"/>
+            <column name="id" valueNumeric="5"/>
+            <column name="version" valueNumeric="0"/>
+        </insert>
+        <insert tableName="phone">
+            <column name="number" value="213242144 добавочный 122"/>
+            <column name="organization_id" valueNumeric="4"/>
+            <column name="id" valueNumeric="6"/>
+            <column name="version" valueNumeric="0"/>
+        </insert>
+        <insert tableName="phone">
+            <column name="number" value="245624563"/>
+            <column name="organization_id" valueNumeric="4"/>
+            <column name="id" valueNumeric="7"/>
+            <column name="version" valueNumeric="0"/>
+        </insert>
+        <insert tableName="phone">
+            <column name="number" value="734653647"/>
+            <column name="organization_id" valueNumeric="4"/>
+            <column name="id" valueNumeric="8"/>
+            <column name="version" valueNumeric="0"/>
+        </insert>
+        <insert tableName="phone">
+            <column name="number" value="456478436"/>
+            <column name="organization_id" valueNumeric="5"/>
+            <column name="id" valueNumeric="9"/>
+            <column name="version" valueNumeric="0"/>
+        </insert>
+        <insert tableName="phone">
+            <column name="number" value="435575868"/>
+            <column name="organization_id" valueNumeric="8"/>
+            <column name="id" valueNumeric="10"/>
+            <column name="version" valueNumeric="0"/>
+        </insert>
+        <insert tableName="phone">
+            <column name="number" value="345634564"/>
+            <column name="organization_id" valueNumeric="8"/>
+            <column name="id" valueNumeric="11"/>
+            <column name="version" valueNumeric="0"/>
+        </insert>
+        <insert tableName="phone">
+            <column name="number" value="345675477"/>
+            <column name="organization_id" valueNumeric="10"/>
+            <column name="id" valueNumeric="12"/>
+            <column name="version" valueNumeric="0"/>
+        </insert>
+        <insert tableName="phone">
+            <column name="number" value="тел. 456834385"/>
+            <column name="organization_id" valueNumeric="12"/>
+            <column name="id" valueNumeric="13"/>
+            <column name="version" valueNumeric="0"/>
+        </insert>
+        <insert tableName="phone">
+            <column name="number" value="факс. 345734865"/>
+            <column name="organization_id" valueNumeric="12"/>
+            <column name="id" valueNumeric="14"/>
+            <column name="version" valueNumeric="0"/>
+        </insert>
+        <insert tableName="phone">
+            <column name="number" value="456784586"/>
+            <column name="organization_id" valueNumeric="13"/>
+            <column name="id" valueNumeric="15"/>
+            <column name="version" valueNumeric="0"/>
+        </insert>
+        <insert tableName="phone">
+            <column name="number" value="567845856"/>
+            <column name="organization_id" valueNumeric="14"/>
+            <column name="id" valueNumeric="16"/>
+            <column name="version" valueNumeric="0"/>
+        </insert>
+        <insert tableName="phone">
+            <column name="number" value="456346733"/>
+            <column name="organization_id" valueNumeric="18"/>
+            <column name="id" valueNumeric="17"/>
+            <column name="version" valueNumeric="0"/>
+        </insert>
+    </changeSet>
 </databaseChangeLog>

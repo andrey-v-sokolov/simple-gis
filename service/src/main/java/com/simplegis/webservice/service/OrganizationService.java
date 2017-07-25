@@ -35,6 +35,8 @@ public class OrganizationService {
      * @return organizations List
      */
     public List<Organization> getAll() {
+        LOG.debug("Getting all organizations.");
+
         return organizationDao.getAll();
     }
 

@@ -26,6 +26,8 @@ public class CityService {
      * @return city List
      */
     public List<City> getAll() {
+        LOG.debug("Getting all cities.");
+
         return cityDao.getAll();
     }
 

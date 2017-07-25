@@ -60,8 +60,8 @@ public class ScopeDaoImpl implements ScopeDao {
     @Override
     @Transactional
     public Scope insert(Scope scope) {
-        String sql = "INSERT INTO simplegisdb.scope (name, version)"
-                + " VALUES (?, ?)";
+        String sql = "INSERT INTO simplegisdb.scope (name, version, key_words)"
+                + " VALUES (?, ?, ?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -72,7 +72,7 @@ public class ScopeDaoImpl implements ScopeDao {
             int i = 0;
             preparedStatement.setString(++i, scope.getName());
             preparedStatement.setLong(++i, 0);
-
+            preparedStatement.setString(++i, scope.getKeyWords());
 
             return preparedStatement;
 
@@ -86,7 +86,7 @@ public class ScopeDaoImpl implements ScopeDao {
     @Transactional
     public List<Scope> batchInsert(List<Scope> scopes) {
         String sql = "INSERT INTO simplegisdb.scope (name, version)"
-                + " VALUES (?, ?)";
+                + " VALUES (?, ?, ?)";
 
         List<Map<String, Object>> generatedKeys;
 
@@ -100,6 +100,7 @@ public class ScopeDaoImpl implements ScopeDao {
                         int index = 0;
                         preparedStatement.setString(++index, scope.getName());
                         preparedStatement.setLong(++index, 0);
+                        preparedStatement.setString(++index, scope.getKeyWords());
 
                     }
 

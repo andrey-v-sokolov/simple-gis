@@ -26,6 +26,8 @@ public class StreetService {
      * @return street List
      */
     public List<Street> getAll() {
+        LOG.debug("Getting all streets.");
+
         return streetDao.getAll();
     }
 

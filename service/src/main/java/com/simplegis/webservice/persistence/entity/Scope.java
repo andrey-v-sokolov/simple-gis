@@ -16,6 +16,7 @@ public class Scope implements Serializable {
     private Integer id;
     private String name;
     private Integer version;
+    private String keyWords;
 
     public Scope() {
     }
@@ -24,16 +25,19 @@ public class Scope implements Serializable {
         this.id = value.id;
         this.name = value.name;
         this.version = value.version;
+        this.keyWords = value.keyWords;
     }
 
     public Scope(
             Integer id,
             String name,
-            Integer version
+            Integer version,
+            String keyWords
     ) {
         this.id = id;
         this.name = name;
         this.version = version;
+        this.keyWords = keyWords;
     }
 
     public static long getSerialVersionUID() {
@@ -64,6 +68,14 @@ public class Scope implements Serializable {
         this.version = version;
     }
 
+    public String getKeyWords() {
+        return keyWords;
+    }
+
+    public void setKeyWords(String keyWords) {
+        this.keyWords = keyWords;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -80,6 +92,7 @@ public class Scope implements Serializable {
                 .append(id, scope.id)
                 .append(name, scope.name)
                 .append(version, scope.version)
+                .append(keyWords, scope.keyWords)
                 .isEquals();
     }
 
@@ -89,6 +102,7 @@ public class Scope implements Serializable {
                 .append(id)
                 .append(name)
                 .append(version)
+                .append(keyWords)
                 .toHashCode();
     }
 
@@ -98,6 +112,7 @@ public class Scope implements Serializable {
                 .append("id", id)
                 .append("name", name)
                 .append("version", version)
+                .append("keyWords", keyWords)
                 .toString();
     }
 }
