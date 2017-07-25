@@ -174,13 +174,14 @@ public class OrganizationDaoImpl implements OrganizationDao {
     @Transactional(readOnly = true)
     public List<Organization> getByScopeNameOrOrganizationNameAndGeoToken(String organizationToken, String geoToken) {
         String sql = "SELECT * FROM simplegisdb.organization o WHERE "
-                + "(o.scope IN (SELECT s.id FROM simplegisdb.scope s WHERE s.name LIKE ?) OR o.name LIKE ?) "
+                + "(o.scope IN (SELECT s.id FROM simplegisdb.scope s WHERE s.name LIKE ? OR  s.key_words LIKE ?)"
+                + " OR o.name LIKE ?) "
                 + "AND (o.city IN (SELECT c.id FROM simplegisdb.city c WHERE c.name LIKE ?) "
                 + "OR o.street IN (SELECT st.id FROM simplegisdb.street st WHERE st.name LIKE ?))";
 
         String oToken = "%" + organizationToken + "%";
         String gToken = "%" + geoToken + "%";
-        Object[] args = {oToken, oToken, gToken, gToken};
+        Object[] args = {oToken, oToken, oToken, gToken, gToken};
 
         return jdbcTemplate.query(sql, args, new BeanPropertyRowMapper<>(Organization.class));
     }
