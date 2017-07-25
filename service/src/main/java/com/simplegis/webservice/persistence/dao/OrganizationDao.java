@@ -12,44 +12,55 @@ import java.util.List;
 public interface OrganizationDao extends GenericDao<Organization> {
 
     /**
-     * @param name
-     * @return
+     * DAO method for search organizations by name or name substring.
+     *
+     * @param name name or substring to search by
+     * @return list of found organizations
      */
     List<Organization> getByName(String name);
 
     /**
-     * @param cityId
-     * @return
+     * DAO method for search organizations by city Id.
+     *
+     * @param cityId to search in
+     * @return list of found organizations
      */
     List<Organization> getByCityId(BigInteger cityId);
 
     /**
-     * @param cityId
-     * @param streetId
-     * @return
+     * DAO method for search organizations by city and street Ids.
+     *
+     * @param cityId   to search by
+     * @param streetId to search by
+     * @return list of found organizations
      */
     List<Organization> getByCityIdAndStreetId(BigInteger cityId, BigInteger streetId);
 
     /**
-     * @param cityId
-     * @param streetId
-     * @param building
-     * @return
+     * DAO method for search organizations by city and street Ids and building ("full address").
+     *
+     * @param cityId   to search by
+     * @param streetId to search by
+     * @param building to search by
+     * @return list of found organizations
      */
     List<Organization> getByCityIdAndStreetIdAndBuilding(BigInteger cityId, BigInteger streetId, Integer building);
 
-    //ToDo: clarify task 3.1 with manager.
-
     /**
-     * @param organizationToken
-     * @param geoToken
-     * @return
+     * DAO method for search organizations by string representing a substring of its name or scope
+     * and by string representing a substring of city or street name.
+     *
+     * @param organizationToken string representing a substring of organisation name or scope
+     * @param geoToken          string representing a substring of city or street name to search in
+     * @return list of found organizations
      */
     List<Organization> getByScopeNameOrOrganizationNameAndGeoToken(String organizationToken, String geoToken);
 
     /**
-     * @param timestamp
-     * @return
+     * DAO method for search organizations that were added or updated later than specified timestamp.
+     *
+     * @param timestamp to compare time of modification
+     * @return list of found organizations
      */
     List<Organization> getOrganizationAddedOrModifiedSince(Timestamp timestamp);
 
