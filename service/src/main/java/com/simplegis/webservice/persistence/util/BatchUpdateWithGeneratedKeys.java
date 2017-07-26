@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * https://jira.spring.io/browse/SPR-1836 slightly modified.
+ * This class is an implementation of a batch insert from https://jira.spring.io/browse/SPR-1836 (slightly modified).
  */
 @Component
 public class BatchUpdateWithGeneratedKeys {
@@ -25,16 +25,14 @@ public class BatchUpdateWithGeneratedKeys {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    //ToDo: compose proper javadoc.
-
     /**
-     * Temporary javadoc.
+     * butchUpdate execution method with ability of return generated keys.
      *
-     * @param sql                parameter
-     * @param pss                parameter
-     * @param generatedKeyHolder parameter
+     * @param sql                to execute in batch mode
+     * @param pss                batch prepared statement setter
+     * @param generatedKeyHolder key holder
      * @return generated keys list
-     * @throws DataAccessException exception
+     * @throws DataAccessException in case of sql errors.
      */
     public List<Map<String, Object>> batchUpdate(final String sql,
                                                  final BatchPreparedStatementSetter pss, final KeyHolder generatedKeyHolder)
