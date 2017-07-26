@@ -2,6 +2,7 @@ package com.simplegis.webservice.persistence.dao.impl;
 
 
 import com.simplegis.webservice.persistence.dao.OrganizationDao;
+import com.simplegis.webservice.persistence.dao.PhoneDao;
 import com.simplegis.webservice.persistence.entity.Organization;
 import com.simplegis.webservice.persistence.util.BatchUpdateWithGeneratedKeys;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,9 @@ public class OrganizationDaoImpl implements OrganizationDao {
     @Autowired
     private BatchUpdateWithGeneratedKeys batchUpdateWithGeneratedKeys;
 
+    @Autowired
+    private PhoneDao phoneDao;
+
     @Override
     @Transactional(readOnly = true)
     public List<Organization> getAll() {
@@ -46,7 +50,9 @@ public class OrganizationDaoImpl implements OrganizationDao {
         String sql = "SELECT * FROM simplegisdb.organization o WHERE o.id = ?";
         Object[] args = {id};
 
-        return jdbcTemplate.queryForObject(sql, args, new BeanPropertyRowMapper<>(Organization.class));
+        Organization organization = jdbcTemplate.queryForObject(sql, args, new BeanPropertyRowMapper<>(Organization.class));
+        organization.setPhones(phoneDao.getByOrganizationId(organization.getId()));
+        return organization;
     }
 
     @Override
@@ -72,7 +78,7 @@ public class OrganizationDaoImpl implements OrganizationDao {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         jdbcTemplate.update(connection -> {
-            String[] columnNames = {"id"};
+            String[] columnNames = {"id", "modified"};
             PreparedStatement preparedStatement = connection.prepareStatement(sql, columnNames);
 
             int i = 0;
@@ -88,7 +94,10 @@ public class OrganizationDaoImpl implements OrganizationDao {
 
         }, keyHolder);
 
-        organization.setId(keyHolder.getKey().longValue());
+        organization.setId((long) keyHolder.getKeys().get("id"));
+        organization.setModified((Timestamp) keyHolder.getKeys().get("modified"));
+        organization.getPhones().forEach(p -> p.setOrganizationId(organization.getId()));
+        organization.setPhones(phoneDao.batchInsert(organization.getPhones()));
         return organization;
     }
 
@@ -124,9 +133,19 @@ public class OrganizationDaoImpl implements OrganizationDao {
                 },
                 new GeneratedKeyHolder());
 
+        // Hibernate (for example) basically would do the same. In case of one to many relations e.g. A contains B's - it will insert A, obtain its Id
+        // and then insert B's. Not sure if there is a reason to try lower the number of queries to DB by batch inserting phones and chewing them up
+        // inside of a memory to assign valid ids within organizations before return collection.
+
         for (int i = 0; i < organizations.size(); i++) {
             organizations.get(i).setId((long) generatedKeys.get(i).get("id"));
+            organizations.get(i).setModified((Timestamp) generatedKeys.get(i).get("modified"));
         }
+
+        organizations.forEach(o -> {
+            o.getPhones().forEach(p -> p.setOrganizationId(o.getId()));
+            o.setPhones(phoneDao.batchInsert(o.getPhones()));
+        });
 
         return organizations;
     }
@@ -139,7 +158,9 @@ public class OrganizationDaoImpl implements OrganizationDao {
         String nToken = "%" + name + "%";
         Object[] args = {nToken};
 
-        return jdbcTemplate.query(sql, args, new BeanPropertyRowMapper<>(Organization.class));
+        List<Organization> organizations = jdbcTemplate.query(sql, args, new BeanPropertyRowMapper<>(Organization.class));
+        organizations.forEach(organization -> organization.setPhones(phoneDao.getByOrganizationId(organization.getId())));
+        return organizations;
     }
 
     @Override
@@ -148,7 +169,9 @@ public class OrganizationDaoImpl implements OrganizationDao {
         String sql = "SELECT * FROM simplegisdb.organization o WHERE o.city = ?";
         Object[] args = {cityId};
 
-        return jdbcTemplate.query(sql, args, new BeanPropertyRowMapper<>(Organization.class));
+        List<Organization> organizations = jdbcTemplate.query(sql, args, new BeanPropertyRowMapper<>(Organization.class));
+        organizations.forEach(organization -> organization.setPhones(phoneDao.getByOrganizationId(organization.getId())));
+        return organizations;
     }
 
     @Override
@@ -157,7 +180,9 @@ public class OrganizationDaoImpl implements OrganizationDao {
         String sql = "SELECT * FROM simplegisdb.organization o WHERE o.city = ? AND o.street = ?";
         Object[] args = {cityId, streetId};
 
-        return jdbcTemplate.query(sql, args, new BeanPropertyRowMapper<>(Organization.class));
+        List<Organization> organizations = jdbcTemplate.query(sql, args, new BeanPropertyRowMapper<>(Organization.class));
+        organizations.forEach(organization -> organization.setPhones(phoneDao.getByOrganizationId(organization.getId())));
+        return organizations;
     }
 
     @Override
@@ -166,7 +191,9 @@ public class OrganizationDaoImpl implements OrganizationDao {
         String sql = "SELECT * FROM simplegisdb.organization o WHERE o.city = ? AND o.street = ? AND o.building = ?";
         Object[] args = {cityId, streetId, building};
 
-        return jdbcTemplate.query(sql, args, new BeanPropertyRowMapper<>(Organization.class));
+        List<Organization> organizations = jdbcTemplate.query(sql, args, new BeanPropertyRowMapper<>(Organization.class));
+        organizations.forEach(organization -> organization.setPhones(phoneDao.getByOrganizationId(organization.getId())));
+        return organizations;
     }
 
     @Override
@@ -182,7 +209,9 @@ public class OrganizationDaoImpl implements OrganizationDao {
         String gToken = "%" + geoToken.toLowerCase() + "%";
         Object[] args = {oToken, oToken, oToken, gToken, gToken};
 
-        return jdbcTemplate.query(sql, args, new BeanPropertyRowMapper<>(Organization.class));
+        List<Organization> organizations = jdbcTemplate.query(sql, args, new BeanPropertyRowMapper<>(Organization.class));
+        organizations.forEach(organization -> organization.setPhones(phoneDao.getByOrganizationId(organization.getId())));
+        return organizations;
     }
 
     @Override
@@ -190,6 +219,8 @@ public class OrganizationDaoImpl implements OrganizationDao {
         String sql = "SELECT * FROM simplegisdb.organization o WHERE o.modified >= ?";
         Object[] args = {timestamp};
 
-        return jdbcTemplate.query(sql, args, new BeanPropertyRowMapper<>(Organization.class));
+        List<Organization> organizations = jdbcTemplate.query(sql, args, new BeanPropertyRowMapper<>(Organization.class));
+        organizations.forEach(organization -> organization.setPhones(phoneDao.getByOrganizationId(organization.getId())));
+        return organizations;
     }
 }

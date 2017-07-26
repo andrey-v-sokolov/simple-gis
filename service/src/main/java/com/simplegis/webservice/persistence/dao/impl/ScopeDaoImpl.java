@@ -79,6 +79,7 @@ public class ScopeDaoImpl implements ScopeDao {
         }, keyHolder);
 
         scope.setId(keyHolder.getKey().intValue());
+        scope.setVersion(0);
         return scope;
     }
 
@@ -113,6 +114,7 @@ public class ScopeDaoImpl implements ScopeDao {
 
         for (int i = 0; i < scopes.size(); i++) {
             scopes.get(i).setId((int) generatedKeys.get(i).get("id"));
+            scopes.get(i).setVersion(0);
         }
 
         return scopes;

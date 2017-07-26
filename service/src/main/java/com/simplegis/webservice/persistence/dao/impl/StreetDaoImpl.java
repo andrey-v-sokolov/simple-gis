@@ -83,6 +83,7 @@ public class StreetDaoImpl implements StreetDao {
         }, keyHolder);
 
         street.setId(keyHolder.getKey().longValue());
+        street.setVersion(0);
         return street;
     }
 
@@ -118,6 +119,7 @@ public class StreetDaoImpl implements StreetDao {
 
         for (int i = 0; i < streets.size(); i++) {
             streets.get(i).setId((long) generatedKeys.get(i).get("id"));
+            streets.get(i).setVersion(0);
         }
 
         return streets;

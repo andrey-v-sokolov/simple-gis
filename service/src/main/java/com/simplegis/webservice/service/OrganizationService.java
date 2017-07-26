@@ -69,11 +69,7 @@ public class OrganizationService {
     @Transactional
     public Organization insert(Organization organization) {
 
-        Organization insertedOrganization = organizationDao.insert(organization);
-        insertedOrganization.getPhones().forEach(phone -> phone.setOrganizationId(insertedOrganization.getId()));
-        insertedOrganization.setPhones(addPhoneList(insertedOrganization.getPhones()));
-
-        return insertedOrganization;
+        return organizationDao.insert(organization);
     }
 
     /**
@@ -85,15 +81,7 @@ public class OrganizationService {
     @Transactional
     public List<Organization> batchInsert(List<Organization> organizations) {
 
-        // Hibernate (for example) basically would do the same. In case of one to many relations e.g. A contains B's - it will insert A, obtain its Id
-        // and then insert B's. Not sure if there is a reason to try lower the number of queries to DB by batch inserting phones and chewing them up
-        // inside of a memory to assign valid ids within organizations before return collection.
-
-        List<Organization> insertedOrganizations = organizationDao.batchInsert(organizations);
-        insertedOrganizations.forEach(o -> o.getPhones().forEach(phone -> phone.setOrganizationId(o.getId())));
-        insertedOrganizations.forEach(o -> o.setPhones(addPhoneList(o.getPhones())));
-
-        return insertedOrganizations;
+        return organizationDao.batchInsert(organizations);
     }
 
     /**

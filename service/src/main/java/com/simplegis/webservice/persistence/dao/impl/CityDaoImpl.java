@@ -80,6 +80,7 @@ public class CityDaoImpl implements CityDao {
         }, keyHolder);
 
         city.setId(keyHolder.getKey().longValue());
+        city.setVersion(0);
         return city;
     }
 
@@ -114,6 +115,7 @@ public class CityDaoImpl implements CityDao {
 
         for (int i = 0; i < cities.size(); i++) {
             cities.get(i).setId((long) generatedKeys.get(i).get("id"));
+            cities.get(i).setVersion(0);
         }
 
         return cities;

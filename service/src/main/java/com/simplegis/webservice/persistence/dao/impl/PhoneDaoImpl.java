@@ -79,6 +79,7 @@ public class PhoneDaoImpl implements PhoneDao {
         }, keyHolder);
 
         phone.setId(keyHolder.getKey().longValue());
+        phone.setVersion(0);
         return phone;
     }
 
@@ -113,6 +114,7 @@ public class PhoneDaoImpl implements PhoneDao {
 
         for (int i = 0; i < phones.size(); i++) {
             phones.get(i).setId((long) (int) generatedKeys.get(i).get("id"));
+            phones.get(i).setVersion(0);
         }
 
         return phones;
