@@ -175,6 +175,16 @@ public class OrganizationDaoImpl implements OrganizationDao {
     }
 
     @Override
+    public List<Organization> getByCityIdAndScopeId(Long cityId, Long scopeId) {
+        String sql = "SELECT * FROM simplegisdb.organization o WHERE o.city = ? AND o.scope = ?";
+        Object[] args = {cityId, scopeId};
+
+        List<Organization> organizations = jdbcTemplate.query(sql, args, new BeanPropertyRowMapper<>(Organization.class));
+        organizations.forEach(organization -> organization.setPhones(phoneDao.getByOrganizationId(organization.getId())));
+        return organizations;
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public List<Organization> getByCityIdAndStreetId(Long cityId, Long streetId) {
         String sql = "SELECT * FROM simplegisdb.organization o WHERE o.city = ? AND o.street = ?";

@@ -126,6 +126,22 @@ public class OrganizationController {
     }
 
     /**
+     * Endpoint for search organizations by city and scope ids.
+     *
+     * @param cityId  to seardh in
+     * @param scopeId to search by
+     * @return list of found organizations
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "/getByCityIdAndScopeId/{cityId}/{scopeId}")
+    public List<OrganizationDto> getByCityIdAndScopeId(
+            @PathVariable("cityId") Long cityId,
+            @PathVariable("scopeId") Long scopeId) {
+
+        return organizationService.getByCityIdAndScopeId(cityId, scopeId)
+                .stream().map(OrganizationMapper::toDto).collect(Collectors.toList());
+    }
+
+    /**
      * Endpoint for search organizations by city and street Ids.
      *
      * @param cityId   to search by

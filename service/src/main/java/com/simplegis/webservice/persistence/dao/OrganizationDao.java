@@ -26,6 +26,16 @@ public interface OrganizationDao extends GenericDao<Organization> {
      */
     List<Organization> getByCityId(Long cityId);
 
+
+    /**
+     * DAO method for search organizations by city and scope ids.
+     *
+     * @param cityId to seardh in
+     * @param scopeId to search by
+     * @return list of found organizations
+     */
+    List<Organization> getByCityIdAndScopeId(Long cityId, Long scopeId);
+
     /**
      * DAO method for search organizations by city and street Ids.
      *

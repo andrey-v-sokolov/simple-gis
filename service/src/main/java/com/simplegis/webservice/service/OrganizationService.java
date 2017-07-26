@@ -105,6 +105,17 @@ public class OrganizationService {
     }
 
     /**
+     * Service method for search organizations by city and scope ids.
+     *
+     * @param cityId to seardh in
+     * @param scopeId to search by
+     * @return list of found organizations
+     */
+    public List<Organization> getByCityIdAndScopeId(Long cityId, Long scopeId) {
+        return organizationDao.getByCityIdAndScopeId(cityId, scopeId);
+    }
+
+    /**
      * Service method for search organizations by city and street Ids.
      *
      * @param cityId   to search by
