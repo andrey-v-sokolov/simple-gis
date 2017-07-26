@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -92,7 +91,7 @@ public class StreetService {
      * @param name of street or substring to search by
      * @return list of found street dtos
      */
-    public List<Street> getByCityIdAndName(BigInteger cityId, String name) {
+    public List<Street> getByCityIdAndName(Long cityId, String name) {
         return streetDao.getByCityIdAndName(cityId, name);
     }
 
@@ -103,7 +102,7 @@ public class StreetService {
      * @param maximumLength of street
      * @return list of found streets
      */
-    public List<Street> getByCityIdAndLength(BigInteger cityId, BigDecimal minimalLength, BigDecimal maximumLength) {
+    public List<Street> getByCityIdAndLength(Long cityId, BigDecimal minimalLength, BigDecimal maximumLength) {
         return streetDao.getByCityIdAndLength(cityId, minimalLength, maximumLength);
     }
 }

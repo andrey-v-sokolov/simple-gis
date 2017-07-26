@@ -6,6 +6,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * Organization entity.
@@ -22,6 +23,7 @@ public class Organization implements Serializable {
     private Long city;
     private Long street;
     private Integer scope;
+    private List<Phone> phones;
 
     public Organization() {
     }
@@ -35,6 +37,7 @@ public class Organization implements Serializable {
         this.city = value.city;
         this.street = value.street;
         this.scope = value.scope;
+        this.phones = value.phones;
     }
 
     public Organization(
@@ -45,7 +48,8 @@ public class Organization implements Serializable {
             String www,
             Long city,
             Long street,
-            Integer scope
+            Integer scope,
+            List<Phone> phones
     ) {
         this.id = id;
         this.name = name;
@@ -55,6 +59,7 @@ public class Organization implements Serializable {
         this.city = city;
         this.street = street;
         this.scope = scope;
+        this.phones = phones;
     }
 
     public static long getSerialVersionUID() {
@@ -125,6 +130,14 @@ public class Organization implements Serializable {
         this.scope = scope;
     }
 
+    public List<Phone> getPhones() {
+        return phones;
+    }
+
+    public void setPhones(List<Phone> phones) {
+        this.phones = phones;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -146,6 +159,7 @@ public class Organization implements Serializable {
                 .append(city, that.city)
                 .append(street, that.street)
                 .append(scope, that.scope)
+                .append(phones, that.phones)
                 .isEquals();
     }
 
@@ -160,6 +174,7 @@ public class Organization implements Serializable {
                 .append(city)
                 .append(street)
                 .append(scope)
+                .append(phones)
                 .toHashCode();
     }
 
@@ -174,6 +189,7 @@ public class Organization implements Serializable {
                 .append("city", city)
                 .append("street", street)
                 .append("scope", scope)
+                .append("phones", phones)
                 .toString();
     }
 }

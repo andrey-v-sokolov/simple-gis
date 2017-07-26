@@ -3,7 +3,6 @@ package com.simplegis.webservice.persistence.dao;
 import com.simplegis.webservice.persistence.entity.Street;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -41,7 +40,7 @@ public interface StreetDao extends GenericDao<Street> {
      * @param name   of street or substring to search by
      * @return list of found street dtos
      */
-    List<Street> getByCityIdAndName(BigInteger cityId, String name);
+    List<Street> getByCityIdAndName(Long cityId, String name);
 
     /**
      * Service method for search streets by citId and street length.
@@ -57,5 +56,5 @@ public interface StreetDao extends GenericDao<Street> {
      * @param maximumLength of street
      * @return list of found streets
      */
-    List<Street> getByCityIdAndLength(BigInteger cityId, BigDecimal minimalLength, BigDecimal maximumLength);
+    List<Street> getByCityIdAndLength(Long cityId, BigDecimal minimalLength, BigDecimal maximumLength);
 }

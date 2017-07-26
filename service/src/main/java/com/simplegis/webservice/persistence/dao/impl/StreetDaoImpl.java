@@ -14,7 +14,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.LinkedList;
@@ -162,7 +161,7 @@ public class StreetDaoImpl implements StreetDao {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Street> getByCityIdAndName(BigInteger cityId, String name) {
+    public List<Street> getByCityIdAndName(Long cityId, String name) {
         String sql = "SELECT * FROM simplegisdb.street st WHERE st.city_id = ? AND st.name LIKE ?";
 
         String nToken = "%" + name + "%";
@@ -173,7 +172,7 @@ public class StreetDaoImpl implements StreetDao {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Street> getByCityIdAndLength(BigInteger cityId, BigDecimal minimalLength, BigDecimal maximumLength) {
+    public List<Street> getByCityIdAndLength(Long cityId, BigDecimal minimalLength, BigDecimal maximumLength) {
         String sql = "SELECT * FROM simplegisdb.street st WHERE st.city_id = ? AND st.length >= ? AND st.length <= ?";
 
         List<Object> args = new LinkedList<>();

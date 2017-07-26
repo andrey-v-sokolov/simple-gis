@@ -2,7 +2,6 @@ package com.simplegis.webservice.persistence.dao;
 
 import com.simplegis.webservice.persistence.entity.Organization;
 
-import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -25,7 +24,7 @@ public interface OrganizationDao extends GenericDao<Organization> {
      * @param cityId to search in
      * @return list of found organizations
      */
-    List<Organization> getByCityId(BigInteger cityId);
+    List<Organization> getByCityId(Long cityId);
 
     /**
      * DAO method for search organizations by city and street Ids.
@@ -34,7 +33,7 @@ public interface OrganizationDao extends GenericDao<Organization> {
      * @param streetId to search by
      * @return list of found organizations
      */
-    List<Organization> getByCityIdAndStreetId(BigInteger cityId, BigInteger streetId);
+    List<Organization> getByCityIdAndStreetId(Long cityId, Long streetId);
 
     /**
      * DAO method for search organizations by city and street Ids and building ("full address").
@@ -44,7 +43,7 @@ public interface OrganizationDao extends GenericDao<Organization> {
      * @param building to search by
      * @return list of found organizations
      */
-    List<Organization> getByCityIdAndStreetIdAndBuilding(BigInteger cityId, BigInteger streetId, Integer building);
+    List<Organization> getByCityIdAndStreetIdAndBuilding(Long cityId, Long streetId, Integer building);
 
     /**
      * DAO method for search organizations by string representing a substring of its name or scope

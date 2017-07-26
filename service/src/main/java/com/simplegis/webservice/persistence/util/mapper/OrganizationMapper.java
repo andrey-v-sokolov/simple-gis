@@ -2,9 +2,7 @@ package com.simplegis.webservice.persistence.util.mapper;
 
 import com.simplegis.common.dto.OrganizationDto;
 import com.simplegis.webservice.persistence.entity.Organization;
-import com.simplegis.webservice.persistence.entity.Phone;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -15,10 +13,9 @@ public final class OrganizationMapper {
     /**
      * Maps organization entity to dto.
      * @param organization entity to map
-     * @param phones belongs to entity
      * @return dto.
      */
-    public static OrganizationDto toDto(Organization organization, List<Phone> phones) {
+    public static OrganizationDto toDto(Organization organization) {
         return new OrganizationDto(
                 organization.getId(),
                 organization.getName(),
@@ -28,7 +25,7 @@ public final class OrganizationMapper {
                 organization.getCity(),
                 organization.getStreet(),
                 organization.getScope(),
-                phones.stream().map(PhoneMapper::toDto).collect(Collectors.toList())
+                organization.getPhones().stream().map(PhoneMapper::toDto).collect(Collectors.toList())
         );
     }
 
@@ -46,16 +43,8 @@ public final class OrganizationMapper {
                 organizationDto.getWww(),
                 organizationDto.getCity(),
                 organizationDto.getStreet(),
-                organizationDto.getScope()
+                organizationDto.getScope(),
+                organizationDto.getPhones().stream().map(PhoneMapper::fromDto).collect(Collectors.toList())
         );
-    }
-
-    /**
-     * Extract organization phones from organization dto.
-     * @param organizationDto dto to extract from
-     * @return list of extracted phones
-     */
-    public static List<Phone> extractPhones(OrganizationDto organizationDto) {
-        return organizationDto.getPhones().stream().map(PhoneMapper::fromDto).collect(Collectors.toList());
     }
 }

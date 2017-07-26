@@ -112,7 +112,7 @@ public class PhoneDaoImpl implements PhoneDao {
                 new GeneratedKeyHolder());
 
         for (int i = 0; i < phones.size(); i++) {
-            phones.get(i).setId((long) generatedKeys.get(i).get("id"));
+            phones.get(i).setId((long) (int) generatedKeys.get(i).get("id"));
         }
 
         return phones;

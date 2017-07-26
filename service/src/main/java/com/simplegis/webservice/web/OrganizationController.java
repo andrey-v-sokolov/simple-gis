@@ -5,7 +5,6 @@ import com.simplegis.common.dto.OrganizationDto;
 import com.simplegis.common.dto.PhoneDto;
 import com.simplegis.common.dto.ScopeDto;
 import com.simplegis.webservice.persistence.entity.Organization;
-import com.simplegis.webservice.persistence.entity.Phone;
 import com.simplegis.webservice.persistence.util.mapper.OrganizationMapper;
 import com.simplegis.webservice.persistence.util.mapper.PhoneMapper;
 import com.simplegis.webservice.persistence.util.mapper.ScopeMapper;
@@ -15,11 +14,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigInteger;
 import java.sql.Timestamp;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -43,9 +39,7 @@ public class OrganizationController {
         LOG.info("Received organization/getAll request");
 
         return organizationService.getAll()
-                .stream().map(organization ->
-                        OrganizationMapper.toDto(organization, organizationService.getPhonesByOrganizationId(organization.getId()))
-                ).collect(Collectors.toList());
+                .stream().map(OrganizationMapper::toDto).collect(Collectors.toList());
     }
 
     /**
@@ -58,8 +52,7 @@ public class OrganizationController {
     public OrganizationDto getById(@PathVariable("id") Long id) {
         LOG.info("Received organization/getById/{} request", id);
 
-        return OrganizationMapper.toDto(organizationService.getById(id),
-                organizationService.getPhonesByOrganizationId(id));
+        return OrganizationMapper.toDto(organizationService.getById(id));
     }
 
     /**
@@ -81,15 +74,12 @@ public class OrganizationController {
      * @param organizationDto to insert
      * @return inserted organization dto with generated id
      */
-    //ToDo: refactor;
     @RequestMapping(method = RequestMethod.POST, value = "/insert")
     public OrganizationDto insert(@RequestBody OrganizationDto organizationDto) {
         LOG.info("Received organization/insert request with body {}", organizationDto.toString());
 
-        return OrganizationMapper.toDto(
-                organizationService.insert(OrganizationMapper.fromDto(organizationDto)),
-                organizationService.addPhoneList(OrganizationMapper.extractPhones(organizationDto))
-        );
+        Organization insertedOrg = organizationService.insert(OrganizationMapper.fromDto(organizationDto));
+        return OrganizationMapper.toDto(insertedOrg);
     }
 
     /**
@@ -98,30 +88,13 @@ public class OrganizationController {
      * @param organizationDtos list to insert
      * @return list of inserted organization dtos
      */
-    //ToDo: refactor;
     @RequestMapping(method = RequestMethod.POST, value = "/batchInsert")
     public List<OrganizationDto> batchInsert(@RequestBody List<OrganizationDto> organizationDtos) {
         LOG.info("Received organization/batchInsert request with list of {} elements", organizationDtos.size());
 
-        List<Organization> insertedOrganizations = organizationService.batchInsert(
+        return organizationService.batchInsert(
                 organizationDtos.stream().map(OrganizationMapper::fromDto).collect(Collectors.toList())
-        );
-
-        Map<Long, List<Phone>> organizationPhones = new HashMap<>();
-
-        // Hibernate (for example) basically would do the same. In case of one to many relations e.g. A contains B's - it will insert A, obtain its Id
-        // and then insert B's. Not sure if there is a reason to try lower the number of queries to DB by batch inserting phones and chewing them up
-        // inside of a memory to assign valid ids within organizations before return collection.
-        organizationDtos.forEach(o ->
-                organizationPhones.put(
-                        o.getId(), organizationService.addPhoneList(o.getPhones().stream().peek(p -> p.setOrganizationId(o.getId()))
-                                .map(PhoneMapper::fromDto).collect(Collectors.toList()))
-                )
-        );
-
-        return insertedOrganizations.stream().map(io ->
-                OrganizationMapper.toDto(io, organizationPhones.get(io.getId()))
-        ).collect(Collectors.toList());
+        ).stream().map(OrganizationMapper::toDto).collect(Collectors.toList());
     }
 
     /**
@@ -135,9 +108,7 @@ public class OrganizationController {
         LOG.info("Received organization/getByName/{} request ", name);
 
         return organizationService.getByName(name)
-                .stream().map(organization ->
-                        OrganizationMapper.toDto(organization, organizationService.getPhonesByOrganizationId(organization.getId()))
-                ).collect(Collectors.toList());
+                .stream().map(OrganizationMapper::toDto).collect(Collectors.toList());
     }
 
     /**
@@ -147,13 +118,11 @@ public class OrganizationController {
      * @return list of found organization dtos
      */
     @RequestMapping(method = RequestMethod.GET, value = "/getByCityId/{cityId}")
-    public List<OrganizationDto> getByCityId(@PathVariable("cityId") BigInteger cityId) {
+    public List<OrganizationDto> getByCityId(@PathVariable("cityId") Long cityId) {
         LOG.info("Received organization/getByCityId/{} request ", cityId);
 
         return organizationService.getByCityId(cityId)
-                .stream().map(organization ->
-                        OrganizationMapper.toDto(organization, organizationService.getPhonesByOrganizationId(organization.getId()))
-                ).collect(Collectors.toList());
+                .stream().map(OrganizationMapper::toDto).collect(Collectors.toList());
     }
 
     /**
@@ -165,14 +134,12 @@ public class OrganizationController {
      */
     @RequestMapping(method = RequestMethod.GET, value = "/getByCityIdAndStreetId/{cityId}/{streetId}")
     public List<OrganizationDto> getByCityIdAndStreetId(
-            @PathVariable("cityId") BigInteger cityId,
-            @PathVariable("streetId") BigInteger streetId) {
+            @PathVariable("cityId") Long cityId,
+            @PathVariable("streetId") Long streetId) {
         LOG.info("Received organization/getByCityIdAndStreetId/{}/{} request ", cityId, streetId);
 
         return organizationService.getByCityIdAndStreetId(cityId, streetId)
-                .stream().map(organization ->
-                        OrganizationMapper.toDto(organization, organizationService.getPhonesByOrganizationId(organization.getId()))
-                ).collect(Collectors.toList());
+                .stream().map(OrganizationMapper::toDto).collect(Collectors.toList());
     }
 
     /**
@@ -185,15 +152,13 @@ public class OrganizationController {
      */
     @RequestMapping(method = RequestMethod.GET, value = "/getByCityIdAndStreetIdAndBuilding/{cityId}/{streetId}/{building}")
     public List<OrganizationDto> getByCityIdAndStreetIdAndBuilding(
-            @PathVariable("cityId") BigInteger cityId,
-            @PathVariable("streetId") BigInteger streetId,
+            @PathVariable("cityId") Long cityId,
+            @PathVariable("streetId") Long streetId,
             @PathVariable("building") Integer building) {
         LOG.info("Received organization/getByCityIdAndStreetIdAndBuilding/{}/{}/{} request ", cityId, streetId, building);
 
         return organizationService.getByCityIdAndStreetIdAndBuilding(cityId, streetId, building)
-                .stream().map(organization ->
-                        OrganizationMapper.toDto(organization, organizationService.getPhonesByOrganizationId(organization.getId()))
-                ).collect(Collectors.toList());
+                .stream().map(OrganizationMapper::toDto).collect(Collectors.toList());
     }
 
     /**
@@ -211,9 +176,7 @@ public class OrganizationController {
         LOG.info("Received organization/getByScopeNameOrOrganizationNameAndGeoToken/{}/{} request ", organizationToken, geoToken);
 
         return organizationService.getByScopeNameOrOrganizationNameAndGeoToken(organizationToken, geoToken)
-                .stream().map(organization ->
-                        OrganizationMapper.toDto(organization, organizationService.getPhonesByOrganizationId(organization.getId()))
-                ).collect(Collectors.toList());
+                .stream().map(OrganizationMapper::toDto).collect(Collectors.toList());
     }
 
     /**
@@ -227,9 +190,7 @@ public class OrganizationController {
         LOG.info("Received organization/getByScopeNameOrOrganizationNameAndGeoToken request with timestamp {}", timestamp.toString());
 
         return organizationService.getOrganizationAddedOrModifiedSince(timestamp)
-                .stream().map(organization ->
-                        OrganizationMapper.toDto(organization, organizationService.getPhonesByOrganizationId(organization.getId()))
-                ).collect(Collectors.toList());
+                .stream().map(OrganizationMapper::toDto).collect(Collectors.toList());
     }
 
     /**

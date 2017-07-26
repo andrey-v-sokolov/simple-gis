@@ -13,7 +13,6 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigInteger;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -145,7 +144,7 @@ public class OrganizationDaoImpl implements OrganizationDao {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Organization> getByCityId(BigInteger cityId) {
+    public List<Organization> getByCityId(Long cityId) {
         String sql = "SELECT * FROM simplegisdb.organization o WHERE o.city = ?";
         Object[] args = {cityId};
 
@@ -154,7 +153,7 @@ public class OrganizationDaoImpl implements OrganizationDao {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Organization> getByCityIdAndStreetId(BigInteger cityId, BigInteger streetId) {
+    public List<Organization> getByCityIdAndStreetId(Long cityId, Long streetId) {
         String sql = "SELECT * FROM simplegisdb.organization o WHERE o.city = ? AND o.street = ?";
         Object[] args = {cityId, streetId};
 
@@ -163,7 +162,7 @@ public class OrganizationDaoImpl implements OrganizationDao {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Organization> getByCityIdAndStreetIdAndBuilding(BigInteger cityId, BigInteger streetId, Integer building) {
+    public List<Organization> getByCityIdAndStreetIdAndBuilding(Long cityId, Long streetId, Integer building) {
         String sql = "SELECT * FROM simplegisdb.organization o WHERE o.city = ? AND o.street = ? AND o.building = ?";
         Object[] args = {cityId, streetId, building};
 
@@ -179,8 +178,8 @@ public class OrganizationDaoImpl implements OrganizationDao {
                 + "AND (o.city IN (SELECT c.id FROM simplegisdb.city c WHERE c.name LIKE ?) "
                 + "OR o.street IN (SELECT st.id FROM simplegisdb.street st WHERE st.name LIKE ?))";
 
-        String oToken = "%" + organizationToken + "%";
-        String gToken = "%" + geoToken + "%";
+        String oToken = "%" + organizationToken.toLowerCase() + "%";
+        String gToken = "%" + geoToken.toLowerCase() + "%";
         Object[] args = {oToken, oToken, oToken, gToken, gToken};
 
         return jdbcTemplate.query(sql, args, new BeanPropertyRowMapper<>(Organization.class));

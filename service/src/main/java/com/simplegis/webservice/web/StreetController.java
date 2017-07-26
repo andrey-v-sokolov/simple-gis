@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -118,7 +117,7 @@ public class StreetController {
      */
     @RequestMapping(method = RequestMethod.GET, value = "/getByCityIdAndName/{cityId}/{name}")
     public List<StreetDto> getByCityIdAndName(
-            @PathVariable("cityID") BigInteger cityId,
+            @PathVariable("cityId") Long cityId,
             @PathVariable("name") String name) {
         LOG.info("Received street/getByCityIdAndName/{}/{} request ", cityId, name);
 
@@ -135,7 +134,7 @@ public class StreetController {
      */
     @RequestMapping(method = RequestMethod.GET, value = "/getByCityIdAndLength/{cityId}/{minLength}/{maxLength}")
     public List<StreetDto> getByCityIdAndLength(
-            @PathVariable("cityId") BigInteger cityId,
+            @PathVariable("cityId") Long cityId,
             @PathVariable("minLength") BigDecimal minimalLength,
             @PathVariable("maxLength") BigDecimal maximumLength) {
         LOG.info("Received street/getByCityIdAndLength/{}/{}/{} request ", cityId, minimalLength, maximumLength);
