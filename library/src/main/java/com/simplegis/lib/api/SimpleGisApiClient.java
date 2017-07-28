@@ -21,17 +21,19 @@ public interface SimpleGisApiClient {
 
 
     /**
+     * Call service to get all cities.
      *
-     * @return
+     * @return list of all cities.
      */
     @GET("city/getAll")
     Call<List<CityDto>> findAllCities();
 
     /**
+     * Call service to find cities by area.
      *
-     * @param minArea
-     * @param maxArea
-     * @return
+     * @param minArea of a city to find
+     * @param maxArea of a city to find
+     * @return list of found cities
      */
     @GET("city/getByArea/{minArea}/{maxArea}/")
     Call<List<CityDto>> findCitiesByArea(
@@ -39,10 +41,11 @@ public interface SimpleGisApiClient {
             @Path("maxArea") BigDecimal maxArea);
 
     /**
+     * Call service to find cities by population.
      *
-     * @param minPopulation
-     * @param maxPopulation
-     * @return
+     * @param minPopulation of a city to find
+     * @param maxPopulation of a city to find
+     * @return list of found cities
      */
     @GET("city/getByPopulation/{minPopulation}/{maxPopulation}/")
     Call<List<CityDto>> findCitiesByPopulation(
@@ -50,18 +53,20 @@ public interface SimpleGisApiClient {
             @Path("maxPopulation") BigInteger maxPopulation);
 
     /**
+     * Call service to get all scopes.
      *
-     * @return
+     * @return list of all scopes.
      */
     @GET("organization/getAvailableScopes")
     Call<List<ScopeDto>> getAllScopes();
 
     /**
+     * Call service to find a streets with specific length in a defined city.
      *
-     * @param cityId
-     * @param minLength
-     * @param maxLength
-     * @return
+     * @param cityId to search in
+     * @param minLength of a street to find
+     * @param maxLength of a street to find
+     * @return list of found streets
      */
     @GET("street/getByCityIdAndLength/{cityId}/{minLength}/{maxLength}/")
     Call<List<StreetDto>> findStreetsByCityAndLength(
@@ -70,10 +75,11 @@ public interface SimpleGisApiClient {
             @Path("maxLength") BigDecimal maxLength);
 
     /**
+     * Call service to find organizations by organization and geo tokens.
      *
-     * @param orgToken
-     * @param geoToken
-     * @return
+     * @param orgToken to search in org names scope names or scope keywords
+     * @param geoToken to search in city and street names
+     * @return list of found organizations
      */
     @GET("organization/getByScopeNameOrOrganizationNameAndGeoToken/{orgToken}/{geoToken}")
     Call<List<OrganizationDto>> findOrganizationsByStringAndGeoTokens(
@@ -81,10 +87,11 @@ public interface SimpleGisApiClient {
             @Path("geoToken") String geoToken);
 
     /**
+     * Call service to find all organizations with defined scope in defined city.
      *
-     * @param cityId
-     * @param scopeId
-     * @return
+     * @param cityId to search in
+     * @param scopeId to search by
+     * @return list of found organizations
      */
     @GET("organization/getByCityIdAndScopeId/{cityId}/{scopeId}")
     Call<List<OrganizationDto>> findOrganizationsByCityAndScopeIds(
@@ -92,10 +99,11 @@ public interface SimpleGisApiClient {
             @Path("scopeId") Long scopeId);
 
     /**
+     * Call service to find organizations in a defined city located on defined street.
      *
-     * @param cityId
-     * @param streetId
-     * @return
+     * @param cityId to search in
+     * @param streetId to search on
+     * @return list of found organizations
      */
     @GET("organization/getByCityIdAndStreetId/{cityId}/{streetId}")
     Call<List<OrganizationDto>> findOrganizationsByCityAndStreetIds(

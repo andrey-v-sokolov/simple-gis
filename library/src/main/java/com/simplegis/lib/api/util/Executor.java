@@ -3,10 +3,8 @@ package com.simplegis.lib.api.util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -25,21 +23,14 @@ public class Executor<T> {
      */
     public List<T> execute(Call<List<T>> call) {
 
-        List<T> results = new LinkedList<>();
+        Response<List<T>> response;
+        try {
+            response = call.execute();
+        } catch (Exception e) {
+            LOG.error("Failed to execute service request");
+            return null;
+        }
 
-        call.enqueue(new Callback<List<T>>() {
-            @Override
-            public void onResponse(Call<List<T>> call, Response<List<T>> response) {
-                for (T res : response.body()) {
-                    results.add(res);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<T>> call, Throwable t) {
-                LOG.error(t.getMessage());
-            }
-        });
-        return results;
+        return response.body();
     }
 }

@@ -30,7 +30,7 @@ public class ApiService {
         if (client == null) {
             LOG.debug("Creating client");
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("http://localhost:8080/") //ToDo: configurable url
+                    .baseUrl("http://localhost:8080") //ToDo: configurable url
                     .addConverterFactory(JacksonConverterFactory.create(objectMapper))
                     .build();
 
