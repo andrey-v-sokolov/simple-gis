@@ -20,6 +20,8 @@ public class ApiService {
 
     private SimpleGisApiClient client;
 
+    private String baseUrl = "http://localhost:8080";
+
     /**
      * Creates client or return exist one.
      *
@@ -30,12 +32,21 @@ public class ApiService {
         if (client == null) {
             LOG.debug("Creating client");
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("http://localhost:8080") //ToDo: configurable url
+                    .baseUrl(baseUrl)
                     .addConverterFactory(JacksonConverterFactory.create(objectMapper))
                     .build();
 
             client = retrofit.create(SimpleGisApiClient.class);
         }
         return client;
+    }
+
+    /**
+     * Sets client base url.
+     *
+     * @param url to set
+     */
+    public void setBaseUrl(String url) {
+        baseUrl = url;
     }
 }
