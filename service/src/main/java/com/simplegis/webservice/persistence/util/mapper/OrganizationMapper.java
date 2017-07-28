@@ -25,7 +25,8 @@ public final class OrganizationMapper {
                 organization.getCity(),
                 organization.getStreet(),
                 organization.getScope(),
-                organization.getPhones().stream().map(PhoneMapper::toDto).collect(Collectors.toList())
+                organization.getPhones() == null ? null : organization.getPhones()
+                        .stream().map(PhoneMapper::toDto).collect(Collectors.toList())
         );
     }
 
@@ -44,7 +45,8 @@ public final class OrganizationMapper {
                 organizationDto.getCity(),
                 organizationDto.getStreet(),
                 organizationDto.getScope(),
-                organizationDto.getPhones().stream().map(PhoneMapper::fromDto).collect(Collectors.toList())
+                organizationDto.getPhones() == null ? null : organizationDto.getPhones()
+                        .stream().map(PhoneMapper::fromDto).collect(Collectors.toList())
         );
     }
 }

@@ -14,6 +14,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -107,6 +110,13 @@ public class OrganizationController {
     public List<OrganizationDto> getByName(@PathVariable("name") String name) {
         LOG.info("Received organization/getByName/{} request ", name);
 
+        try {
+            name = URLDecoder.decode(name, StandardCharsets.UTF_8.name());
+        } catch (UnsupportedEncodingException e) {
+            LOG.error(e.getMessage());
+            return null;
+        }
+
         return organizationService.getByName(name)
                 .stream().map(OrganizationMapper::toDto).collect(Collectors.toList());
     }
@@ -189,6 +199,15 @@ public class OrganizationController {
     public List<OrganizationDto> getByScopeNameOrOrganizationNameAndGeoToken(
             @PathVariable("orgToken") String organizationToken,
             @PathVariable("geoToken") String geoToken) {
+
+        try {
+            organizationToken = URLDecoder.decode(organizationToken, StandardCharsets.UTF_8.name());
+            geoToken = URLDecoder.decode(geoToken, StandardCharsets.UTF_8.name());
+        } catch (UnsupportedEncodingException e) {
+            LOG.error(e.getMessage());
+            return null;
+        }
+
         LOG.info("Received organization/getByScopeNameOrOrganizationNameAndGeoToken/{}/{} request ", organizationToken, geoToken);
 
         return organizationService.getByScopeNameOrOrganizationNameAndGeoToken(organizationToken, geoToken)

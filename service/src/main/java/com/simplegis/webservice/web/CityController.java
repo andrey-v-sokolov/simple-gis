@@ -8,7 +8,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -100,7 +103,15 @@ public class CityController {
     public List<CityDto> getByName(@PathVariable("name") String name) {
         LOG.info("Received city/getByName/{} request ", name);
 
+        try {
+            name = URLDecoder.decode(name, StandardCharsets.UTF_8.name());
+        } catch (UnsupportedEncodingException e) {
+            LOG.error(e.getMessage());
+            return null;
+        }
+
         return cityService.getByName(name).stream().map(CityMapper::toDto).collect(Collectors.toList());
+
     }
 
     /**

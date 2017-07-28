@@ -83,8 +83,8 @@ public interface SimpleGisApiClient {
      */
     @GET("organization/getByScopeNameOrOrganizationNameAndGeoToken/{orgToken}/{geoToken}")
     Call<List<OrganizationDto>> findOrganizationsByStringAndGeoTokens(
-            @Path("orgToken") String orgToken,
-            @Path("geoToken") String geoToken);
+            @Path(value = "orgToken", encoded = true) String orgToken,
+            @Path(value = "geoToken", encoded = true) String geoToken);
 
     /**
      * Call service to find all organizations with defined scope in defined city.
